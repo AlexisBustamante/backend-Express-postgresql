@@ -1,0 +1,21 @@
+version: "3.3"
+services:
+  postgres:
+    restart: always
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=my_store
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin123
+    ports:
+      - 5432:5432/tcp
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+  pgadmin:
+    restart: always
+    image: dpage/pgadmin4
+    environment:
+     - PGADMIN_DEFAULT_EMAIL=admin@mail.com
+     - PGADMIN_DEFAULT_PASSWORD=12345
+    ports:
+      - 5050:80
