@@ -1,34 +1,38 @@
 const boom = require('@hapi/boom');
-const pool = require('../libs/postgres.pool');
+const { models } = require('../libs/sequelize');
 //uso de una coneccion con Client de PG
 
 class UserService {
   constructor() {
-    this.pool = pool;
-    this.pool.on('error', (err) => console.error(err));//aca  //se deja escuchando
+
   }
   async create(data) {
-    return data;
+    const newUser = await models.User.create(data);
+    return newUser;
   }
 
   async find() {
-    const query = 'select * from tasks';
-    const res = await this.pool.query(query);
-    return res.rows;
+    const client = await models.User.findAll();
+    return client;
   }
 
   async findOne(id) {
-    return { id };
+    const user = await models.User.findByPk(id);
+    if (!user) {
+      throw boom.notFound("user not found");
+    }
+    return user;
   }
 
   async update(id, changes) {
-    return {
-      id,
-      changes,
-    };
+    const user = await this.findOne(id);
+    const res = await user.update(changes);
+    return res;
   }
 
   async delete(id) {
+    const user = await this.findOne(id);
+    await user.destroy();
     return { id };
   }
 }
