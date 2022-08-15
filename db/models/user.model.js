@@ -16,6 +16,11 @@ const UserSchema = {
     type: DataTypes.STRING,
     unique: true
   },
+  role: {
+    allowNull: false,
+    type: DataTypes.STRING,
+    defaultValue: 'customer'
+  },
   password: {
     allowNull: false,
     type: DataTypes.STRING,
@@ -25,7 +30,7 @@ const UserSchema = {
     field: 'created_at',
     type: DataTypes.DATE,
     defaultValue: Sequelize.NOW
-  }
+  },
 }
 
 class User extends Model {

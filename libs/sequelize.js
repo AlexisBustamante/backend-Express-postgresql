@@ -18,6 +18,10 @@ const sequelize = new Sequelize(URI, {
 
 setupModels(sequelize);
 //aca se sincroniza leera el modelo y creará la tabla y relaciones.
-sequelize.sync();
+//sequelize.sync();
 //conexion con sequelize
+
+
+
+
 module.exports = sequelize;

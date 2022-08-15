@@ -1,7 +1,6 @@
 const boom = require('@hapi/boom');
 const { models } = require('../libs/sequelize');
 //uso de una coneccion con Client de PG
-
 class UserService {
   constructor() {
 
@@ -19,7 +18,7 @@ class UserService {
   async findOne(id) {
     const user = await models.User.findByPk(id);
     if (!user) {
-      throw boom.notFound("user not found");
+      throw boom.notFound("user not found");//se envia el error
     }
     return user;
   }
