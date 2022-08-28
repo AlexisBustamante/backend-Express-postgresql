@@ -1,0 +1,50 @@
+{
+    "explorer.confirmDragAndDrop": false,
+    "terminal.integrated.shell.windows": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "[html]": {
+        "editor.defaultFormatter": "vscode.html-language-features"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "[vue]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "mssql.connections": [
+        {
+            "server": "{{put-server-name-here}}",
+            "database": "{{put-database-name-here}}",
+            "user": "{{put-username-here}}",
+            "password": "{{put-password-here}}"
+        }
+    ],
+    "workbench.iconTheme": "material-icon-theme",
+    "liveServer.settings.donotShowInfoMsg": true,
+    "editor.formatOnPaste": true,
+    "editor.formatOnType": true,
+    "explorer.confirmDelete": false,
+    "yaml.schemas": {
+        "file:///c%3A/Users/Alexis%20Bustamante/.vscode/extensions/atlassian.atlascode-2.10.12/resources/schemas/pipelines-schema.json": "bitbucket-pipelines.yml"
+    },
+    "redhat.telemetry.enabled": true,
+    "bracketPairColorizer.depreciation-notice": false,
+    "git.autofetch": true,
+    "tabnine.experimentalAutoImports": true,
+    "editor.formatOnSave": true,
+    "atlascode.jira.enabled": true,
+    "atlascode.jira.jqlList": [
+        {
+            "id": "11838f40-7f4d-467a-8641-63a1e14b5a5e",
+            "enabled": true,
+            "name": "MyIssues",
+            "query": "assignee = currentUser() AND resolution = Unresolved ORDER BY lastViewed DESC",
+            "siteId": "069d3a65-b2a3-46e4-b03f-ec0f29ffb43f",
+            "monitor": true
+        }
+    ],
+       "workbench.colorTheme":"Default Dark+"
+
+}
