@@ -13,14 +13,16 @@ class CustomerService {
   }
 
   async findOne(id) {
-    const customers = await models.Customer.findByPk(id);
-    if (!customers) {
+    const user = await models.Customer.findByPk(id);
+    if (!user) {
       throw boom.notFound('customer not found');
     }
-    return customers;
+    return user;
   }
-
   async create(data) {
+    //con la asociacion entre customer y user, se puede crear en el mismo end point
+    //los registros relacionados siempre y cunaod vnega dentro de data el subojeto "user"
+    //ya que de esta manera se llama la relación
     const newCustomer = await models.Customer.create(data, {
       include: ['user']
     });

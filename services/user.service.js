@@ -1,32 +1,34 @@
 const boom = require('@hapi/boom');
-const { models } = require('../libs/sequelize');
-//uso de una coneccion con Client de PG
-class UserService {
-  constructor() {
 
-  }
+const { models } = require('./../libs/sequelize');
+
+class UserService {
+  constructor() { }
+
   async create(data) {
     const newUser = await models.User.create(data);
     return newUser;
   }
 
   async find() {
-    const client = await models.User.findAll();
-    return client;
+    const rta = await models.User.findAll({
+      include: ['customer']
+    });
+    return rta;
   }
 
   async findOne(id) {
     const user = await models.User.findByPk(id);
     if (!user) {
-      throw boom.notFound("user not found");//se envia el error
+      throw boom.notFound('user not found');
     }
     return user;
   }
 
   async update(id, changes) {
     const user = await this.findOne(id);
-    const res = await user.update(changes);
-    return res;
+    const rta = await user.update(changes);
+    return rta;
   }
 
   async delete(id) {

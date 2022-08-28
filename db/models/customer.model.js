@@ -45,9 +45,7 @@ const CustomerSchema = {
 }
 
 class Customer extends Model {
-
   static associate(models) {
-    //relaicon de  1 a 1 la FK en la TBL e customer
     this.belongsTo(models.User, { as: 'user' });
   }
 

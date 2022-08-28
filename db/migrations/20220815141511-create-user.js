@@ -14,7 +14,7 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     //down, permite revertir los cambios
-    await queryInterface.drop(USER_TABLE);
+    await queryInterface.dropTable(USER_TABLE);
     /**
      * Add reverting commands here.
      *

@@ -1,5 +1,5 @@
 const Joi = require('joi');
-
+//schema de  capa de validacion
 const id = Joi.number().integer();
 const name = Joi.string().min(3).max(30);
 const lastName = Joi.string();
