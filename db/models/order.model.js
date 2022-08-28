@@ -27,6 +27,18 @@ const OrderSchema = {
     field: 'created_at',
     defaultValue: Sequelize.NOW,
   },
+  total: {//para datos no muy grandes es una suma que obitne e total
+    type: DataTypes.VIRTUAL,
+    get() {
+      if (this.items.length > 0) {
+        return this.items.reduce((total, item) => {
+          return total + (item.price * item.OrderProduct.amount);
+        }, 0);
+        return 0;
+      }
+    }
+
+  }
 }
 
 class Order extends Model {
@@ -36,14 +48,15 @@ class Order extends Model {
     this.belongsTo(models.Customer, {
       as: 'customer',
     });
-
+    //relacion de muchos a muchos
     //una orden puede tener muchos productos
-    // this.belongsToMany(models.Product, {
-    //   as: 'items',
-    //   through: models.OrderProduct,
-    //   foreignKey: 'orderId',
-    //   otherKey: 'productId'
-    // });
+    //la relacion se resuelve por OrderProduct
+    this.belongsToMany(models.Product, {
+      as: 'items',
+      through: models.OrderProduct,
+      foreignKey: 'orderId',
+      otherKey: 'productId'
+    });
   }
 
   static config(sequelize) {
