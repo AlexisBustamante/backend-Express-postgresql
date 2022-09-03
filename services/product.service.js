@@ -4,12 +4,9 @@ const { Op } = require('sequelize');//operadores
 const { models } = require('../libs/sequelize');
 
 class ProductsService {
-
   constructor() {
 
   }
-
-
   async create(data) {
     const newProduct = await models.Product.create(data);
     return newProduct;
