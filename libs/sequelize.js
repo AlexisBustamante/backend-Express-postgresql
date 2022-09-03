@@ -15,8 +15,11 @@ const options = {
 }
 
 if (config.isProd) {
-  config.ssl = {
-    rejectUnauthorized: false
+  config.dialectOptions = {
+    ssl: {
+      rejectUnauthorized: false
+
+    }
   }
 }
 //instancia de squelize con la conexion
