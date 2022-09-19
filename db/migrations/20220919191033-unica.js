@@ -5,11 +5,12 @@ const { ProductSchema, PRODUCT_TABLE } = require('./../models/product.model');
 const { CategorySchema, CATEGORY_TABLE } = require('./../models/category.model');
 const { OrderSchema, ORDER_TABLE } = require('./../models/order.model');
 const { OrderProductSchema, ORDER_PRODUCT_TABLE } = require('./../models/order-product.model');
+
 module.exports = {
   up: async (queryInterface) => {
+    await queryInterface.createTable(CATEGORY_TABLE, CategorySchema);
     await queryInterface.createTable(USER_TABLE, UserSchema);
     await queryInterface.createTable(CUSTOMER_TABLE, CustomerSchema);
-    await queryInterface.createTable(CATEGORY_TABLE, CategorySchema);
     await queryInterface.createTable(PRODUCT_TABLE, ProductSchema);
     await queryInterface.createTable(ORDER_TABLE, {
       id: {
