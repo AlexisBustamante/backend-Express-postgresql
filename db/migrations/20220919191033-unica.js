@@ -1,6 +1,4 @@
 'use strict';
-
-
 const { UserSchema, USER_TABLE } = require('./../models/user.model');
 const { CustomerSchema, CUSTOMER_TABLE } = require('./../models/customer.model');
 const { ProductSchema, PRODUCT_TABLE } = require('./../models/product.model');
