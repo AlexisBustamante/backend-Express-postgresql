@@ -1,12 +1,12 @@
 'use strict';
 
 
-const { UserSchema, USER_TABLE } = require('./../models/userModel');
-const { CustomerSchema, CUSTOMER_TABLE } = require('./../models/customerModel');
-const { ProductSchema, PRODUCT_TABLE } = require('./../models/productModel');
-const { CategorySchema, CATEGORY_TABLE } = require('./../models/categoryModel');
-const { OrderSchema, ORDER_TABLE } = require('./../models/orderModel');
-const { OrderProductSchema, ORDER_PRODUCT_TABLE } = require('./../models/order-productModel');
+const { UserSchema, USER_TABLE } = require('./../models/user.model');
+const { CustomerSchema, CUSTOMER_TABLE } = require('./../models/customer.model');
+const { ProductSchema, PRODUCT_TABLE } = require('./../models/product.model');
+const { CategorySchema, CATEGORY_TABLE } = require('./../models/category.model');
+const { OrderSchema, ORDER_TABLE } = require('./../models/order.model');
+const { OrderProductSchema, ORDER_PRODUCT_TABLE } = require('./../models/order-product.model');
 
 module.exports = {
   async up(queryInterface) {
