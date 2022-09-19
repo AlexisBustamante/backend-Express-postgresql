@@ -7,7 +7,7 @@ const options = {};
 if (config.isProd) {
   options.connectionString = config.dbUrl;
   options.ssl = {
-    rejectUnauthorized: true
+    rejectUnauthorized: false
   };
 } else {
   const USER = encodeURIComponent(config.dbUser);
