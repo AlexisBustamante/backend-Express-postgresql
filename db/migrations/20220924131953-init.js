@@ -36,7 +36,13 @@ module.exports = {
         type: Sequelize.DataTypes.DATE,
         field: 'create_at',
         defaultValue: Sequelize.NOW
-      }
+      },
+      updateAt: {
+        allowNull: false,
+        field: 'updateAt',
+        type: Sequelize.DataTypes.DATE,
+        defaultValue: Sequelize.NOW
+      },
     });
     await queryInterface.createTable(CUSTOMER_TABLE, {
       id: {
