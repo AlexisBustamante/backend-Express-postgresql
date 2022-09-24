@@ -27,13 +27,13 @@ const UserSchema = {
   },
   createdAt: {
     allowNull: false,
-    field: 'created_at',
+    field: 'createdAt',
     type: DataTypes.DATE,
     defaultValue: Sequelize.NOW
   },
-  updateAt: {
+  updatedAt: {
     allowNull: false,
-    field: 'updateAt',
+    field: 'updatedAt',
     type: DataTypes.DATE,
     defaultValue: Sequelize.NOW
   },

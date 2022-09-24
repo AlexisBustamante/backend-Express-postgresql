@@ -33,13 +33,13 @@ module.exports = {
       },
       createdAt: {
         allowNull: false,
+        field: 'createdAt',
         type: Sequelize.DataTypes.DATE,
-        field: 'create_at',
         defaultValue: Sequelize.NOW
       },
-      updateAt: {
+      updatedAt: {
         allowNull: false,
-        field: 'updateAt',
+        field: 'updatedAt',
         type: Sequelize.DataTypes.DATE,
         defaultValue: Sequelize.NOW
       },
@@ -67,7 +67,7 @@ module.exports = {
       createdAt: {
         allowNull: false,
         type: Sequelize.DataTypes.DATE,
-        field: 'created_at',
+        field: 'createdAt',
         defaultValue: Sequelize.NOW,
       },
       userId: {
@@ -102,7 +102,7 @@ module.exports = {
       createdAt: {
         allowNull: false,
         type: Sequelize.DataTypes.DATE,
-        field: 'created_at',
+        field: 'createdAt',
         defaultValue: Sequelize.NOW,
       },
     });
@@ -132,7 +132,7 @@ module.exports = {
       createdAt: {
         allowNull: false,
         type: Sequelize.DataTypes.DATE,
-        field: 'created_at',
+        field: 'createdAt',
         defaultValue: Sequelize.NOW,
       },
       categoryId: {
@@ -168,7 +168,7 @@ module.exports = {
       createdAt: {
         allowNull: false,
         type: Sequelize.DataTypes.DATE,
-        field: 'created_at',
+        field: 'createdAt',
         defaultValue: Sequelize.NOW,
       },
     });
@@ -182,7 +182,7 @@ module.exports = {
       createdAt: {
         allowNull: false,
         type: Sequelize.DataTypes.DATE,
-        field: 'created_at',
+        field: 'createdAt',
         defaultValue: Sequelize.NOW,
       },
       amount: {
