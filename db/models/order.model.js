@@ -24,7 +24,7 @@ const OrderSchema = {
   createdAt: {
     allowNull: false,
     type: DataTypes.DATE,
-    field: 'created_at',
+    field: 'createdAt',
     defaultValue: Sequelize.NOW,
   },
   total: {//para datos no muy grandes es una suma que obitne e total

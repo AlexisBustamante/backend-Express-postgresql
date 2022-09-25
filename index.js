@@ -3,10 +3,13 @@ const cors = require('cors');
 const routerApi = require('./routes');
 const { checkApiKey } = require('./middlewares/auth.handler');
 const { logErrors, errorHandler, boomErrorHandler } = require('./middlewares/error.handler');
-
 const app = express();
 const port = process.env.PORT || 3000;
-
+const morgan = require('morgan');
+const helmet = require('helmet');
+const passport = require('passport')
+app.use(morgan('tiny'));
+app.use(helmet());
 app.use(express.json());
 
 const whitelist = ['http://localhost:8080', 'https://myapp.co'];
@@ -19,21 +22,21 @@ const options = {
     }
   }
 }
-app.use(cors());
+app.use(cors(options));
+require('./utils/auth');
 // app.get('/', (req, res) => {
 //   res.send('Hola mi server en express');
 // });
-
-app.get('/nueva-ruta', checkApiKey, (req, res) => {
-  res.send('Hola, soy una nueva ruta');
-});
-
-
-
+// Antes de nuestras rutas debemos de colocar esto
+app.use(passport.initialize());
+// app.get('/nueva-ruta', checkApiKey, (req, res) => {
+//   res.send('Hola, soy una nueva ruta');
+// });
 routerApi(app);
 app.use(logErrors);
 app.use(boomErrorHandler);
 app.use(errorHandler);
+
 
 app.listen(port, () => {
   console.log('Mi port' + port);

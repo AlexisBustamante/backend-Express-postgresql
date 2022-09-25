@@ -1,5 +1,6 @@
 const boom = require('@hapi/boom');
 const { models } = require('../libs/sequelize');
+const bcrypt = require('bcrypt');
 
 class CustomerService {
 
@@ -23,9 +24,22 @@ class CustomerService {
     //con la asociacion entre customer y user, se puede crear en el mismo end point
     //los registros relacionados siempre y cunaod vnega dentro de data el subojeto "user"
     //ya que de esta manera se llama la relación
-    const newCustomer = await models.Customer.create(data, {
+
+    const hash = await bcrypt.hash(data.user.password, 10);
+
+    const newData = {
+      ...data,
+      user: {
+        ...data.user,
+        password: hash
+      }
+    }
+
+    const newCustomer = await models.Customer.create(newData, {
       include: ['user']
     });
+
+    delete newCustomer.user.dataValues.password;
     return newCustomer;
   }
 
