@@ -11,7 +11,7 @@ const passport = require('passport')
 app.use(morgan('tiny'));
 app.use(helmet());
 app.use(express.json());
-
+//para validar desde que aplicaicon pueden preguntar a la api, solo 
 const whitelist = ['http://localhost:8080', 'https://myapp.co'];
 const options = {
   origin: (origin, callback) => {

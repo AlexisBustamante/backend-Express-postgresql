@@ -8,7 +8,7 @@ router.post('/login',
     async (req, res, next) => {
 
         try {
-            res.json(req.user);
+            res.json(req.user);//el usuer que entrega el middelware de passport
         } catch (error) {
             next(error);
         }

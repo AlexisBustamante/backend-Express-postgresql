@@ -8,6 +8,7 @@ const options = {
   logging: config.isProd ? false : true,
 }
 
+console.log(config.dbUrl)
 if (config.isProd) {
   options.dialectOptions = {
     ssl: {
