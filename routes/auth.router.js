@@ -1,14 +1,30 @@
 const express = require('express');
 const passport = require('passport');
+const jwt = require('jsonwebtoken');
+
+const {config} = require('./../config/config');///tengo la config para tener secret
 
 const router = express.Router();
 //passport se utiliza como un middlewares
 router.post('/login',
     passport.authenticate('local', { session: false }),
+
     async (req, res, next) => {
 
         try {
-            res.json(req.user);//el usuer que entrega el middelware de passport
+            const user = req.user
+            
+            const payload = {
+                sub:user.id,
+                role:user.role
+            }
+
+            const token = jwt.sign(payload,config.jwtSecret);
+            
+            res.json({
+                user,
+                token
+            });//el usuer que entrega el middelware de passport
         } catch (error) {
             next(error);
         }

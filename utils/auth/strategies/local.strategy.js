@@ -12,8 +12,6 @@ const LocalStrategy = new Strategy({
 },
     async (email, password, done) => {
 
-        console.log(email, password);
-
         try {
             const user = await service.findByEmail(email);
             if (!user) {
