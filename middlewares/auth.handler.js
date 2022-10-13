@@ -20,7 +20,7 @@ function checkAdminRole(req, res, next) {
   }
 
   //valida que el usuario logeado corresponde a los role spermitidos como parametos
-  function checkRoles( [...roles]) {
+  function checkRoles( ...roles) {
 
     return (req,res,next) => {  
         console.log(roles);
@@ -34,8 +34,5 @@ function checkAdminRole(req, res, next) {
     
      }  
   }
-
-
-
 
 module.exports = { checkApiKey,checkAdminRole,checkRoles };

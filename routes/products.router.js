@@ -1,14 +1,13 @@
 const express = require('express');
-
+const passport = require('passport');
 const ProductsService = require('./../services/product.service');
 const validatorHandler = require('./../middlewares/validator.handler');
+const {checkRoles}= require('./../middlewares/auth.handler');
 const { queryProductSchema, createProductSchema, updateProductSchema, getProductSchema } = require('./../schemas/product.schema');
-
 const router = express.Router();
 const service = new ProductsService();
 
 router.get('/', async (req, res, next) => {
-  console.log(req);
   validatorHandler(queryProductSchema, 'query');
   try {
     const products = await service.find(req.query);
@@ -31,7 +30,10 @@ router.get('/:id',
   }
 );
 
+//solo role admin puede crear productos
 router.post('/',
+passport.authenticate('jwt', { session: false }),
+checkRoles('admin'),
   validatorHandler(createProductSchema, 'body'),
   async (req, res, next) => {
     try {

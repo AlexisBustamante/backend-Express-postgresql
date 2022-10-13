@@ -30,10 +30,18 @@ const OrderSchema = {
   total: {//para datos no muy grandes es una suma que obitne e total
     type: DataTypes.VIRTUAL,
     get() {
-      if (this.items.length > 0) {
-        return this.items.reduce((total, item) => {
-          return total + (item.price * item.OrderProduct.amount);
-        }, 0);
+      //validé que los items existan.
+      let go = typeof(this.items)==='undefined' ? false : true
+      
+      if (go) {
+        if (this.items.length > 0) {
+          return this.items.reduce((total, item) => {
+            return total + (item.price * item.OrderProduct.amount);
+          }, 0);
+        }else{
+          return 0
+        }
+      }else{
         return 0;
       }
     }
