@@ -7,7 +7,9 @@ const { queryProductSchema, createProductSchema, updateProductSchema, getProduct
 const router = express.Router();
 const service = new ProductsService();
 
-router.get('/', async (req, res, next) => {
+router.get('/', 
+passport.authenticate('jwt', { session: false }),
+async (req, res, next) => {
   validatorHandler(queryProductSchema, 'query');
   try {
     const products = await service.find(req.query);
@@ -18,6 +20,7 @@ router.get('/', async (req, res, next) => {
 });
 
 router.get('/:id',
+passport.authenticate('jwt', { session: false }),
   validatorHandler(getProductSchema, 'params'),
   async (req, res, next) => {
     try {
@@ -47,6 +50,7 @@ checkRoles('admin'),
 );
 
 router.patch('/:id',
+passport.authenticate('jwt', { session: false }),
   validatorHandler(getProductSchema, 'params'),
   validatorHandler(updateProductSchema, 'body'),
   async (req, res, next) => {
@@ -62,6 +66,7 @@ router.patch('/:id',
 );
 
 router.delete('/:id',
+passport.authenticate('jwt', { session: false }),
   validatorHandler(getProductSchema, 'params'),
   async (req, res, next) => {
     try {
