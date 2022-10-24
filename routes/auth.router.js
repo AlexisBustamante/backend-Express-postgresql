@@ -25,12 +25,7 @@ router.post('/recovery',
 
         try {
             const {email} = req.body;
-            const token = jwt.sign(payload,config.jwtSecret);
-            
-            res.json({
-                user,
-                token
-            });//el usuer que entrega el middelware de passport
+       
         } catch (error) {
             next(error);
         }

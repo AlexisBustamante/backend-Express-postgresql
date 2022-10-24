@@ -59,9 +59,9 @@ console.log(payload)
     let info = await transporter.sendMail({
         from: config.usrEmail, // sender address
         to: user.email, // list of receivers
-        subject: "Prueba desde NODE", // Subject line
-        text: "Hola ALEXIS", // plain text body
-        html: "<b>este es el mensaje que queria enviar desde mi aplicacion en node js </b>", // html body
+        subject: "HOLA MUNDO!! desde NODE and EXPRESS", // Subject line
+        text: "HOLA MUNDO!! desde NODE and EXPRESS", // plain text body
+        html: "<b>Hola Mudno desde node JS</b>", // html body
       });
 
 
