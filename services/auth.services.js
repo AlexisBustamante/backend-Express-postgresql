@@ -29,7 +29,7 @@ class AuthService {
       sub: user.id,
       role: user.role,
     };
-console.log(payload)
+    console.log(payload);
     const token = jwt.sign(payload, config.jwtSecret);
 
     return {
@@ -37,40 +37,38 @@ console.log(payload)
       token,
     }; //el usuer que entrega el middelware de passport
   }
-  async sendMail() {
-//primero verificamos si el correo existe en la BD
+  async sendMail(email) {
+    //primero verificamos si el correo existe en la BD
     const user = await service.findByEmail(email);
     if (!user) {
       throw boom.unauthorized();
     }
 
-    //se crea el transporter
+    //se crea el transporter de quien enviará el correo
     const transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 465,
-        secure: true,
-        auth: {
-            user: config.usrEmail,
-            pass: config.usrPass
-            }
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
+      auth: {
+        user: config.usrEmail,
+        pass: config.usrPass,
+      },
     });
 
     //por el momento me envio el correo a mi mismo.
     let info = await transporter.sendMail({
-        from: config.usrEmail, // sender address
-        to: user.email, // list of receivers
-        subject: "HOLA MUNDO!! desde NODE and EXPRESS", // Subject line
-        text: "HOLA MUNDO!! desde NODE and EXPRESS", // plain text body
-        html: "<b>Hola Mudno desde node JS</b>", // html body
-      });
+      from: config.usrEmail, // sender address
+      to: user.email, // list of receivers
+      subject: 'HOLA MUNDO!! desde NODE and EXPRESS', // Subject line
+      text: 'HOLA MUNDO!! desde NODE and EXPRESS', // plain text body
+      html: 'here must contain html and css ', // html body
+    });
 
-
-      console.log("Message sent: %s", info.messageId);
-      // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-    
-      // Preview only available when sending through an Ethereal account
-      console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-    
+    //console.log("Message sent: %s", info.messageId);
+    // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+    // Preview only available when sending through an Ethereal account
+    //console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+    return { message: 'mail sended' };
   }
 }
 
