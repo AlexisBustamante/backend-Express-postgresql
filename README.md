@@ -27,7 +27,6 @@ docker inspect 'idcontainer'
 ```
 
 ##postgreSQL
-In the root folder of the project you must create a folder named "postgres_data" for use with docker
 ```bash
 In the root folder of the project you must create a folder named "postgres_data" for use with docker
 ```
