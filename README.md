@@ -39,10 +39,14 @@ npm run dev
 npm run dev
 ```
 ### 🛠️ Technologies
+
+```bash
 Javascript
 Node js
 Sequelize
+NodeMailer
 
+```
 
 
 ## 👷‍♂️ Author
