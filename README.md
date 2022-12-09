@@ -26,9 +26,11 @@ docker ps
 docker inspect 'idcontainer'
 ```
 
-#postgreSQL
+##postgreSQL
 In the root folder of the project you must create a folder named "postgres_data" for use with docker
-
+```bash
+In the root folder of the project you must create a folder named "postgres_data" for use with docker
+```
 
 ## ☄️ Usage
 Open in VS code
@@ -50,26 +52,3 @@ Sequelize
  <sub><b>Alexis Bustamante</b></sub></a> <a href="https://github.com/AlexisBustamante" title="Github">🚀</a>
 
 [![Gmail Badge](https://img.shields.io/badge/-Alexisbustamantecisternas@gmail.com-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:joabsonlg918@gmail.com)](mailto:Alexisbustamantecisternas@gmail.com)
-
-
-
-
-
-
-
-
-
-#NODEJS
-use nvm
-use node 14x
-npm i
-npm run dev
-
-#install Docker
- -docker compose up
- -docker compose ps / o docker ps
- -docker inspect 'idcontainer'
-obtener la ip para poder abrir pgAdmin
-
-#postgres
-crear folder postgres_data en raiz para levantar docker.
