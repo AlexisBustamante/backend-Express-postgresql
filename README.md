@@ -20,16 +20,17 @@ nvm list
 nvm use 14
 npm install
 ```
+
+##postgreSQL
+```bash
+In the root folder of the project you must create a folder named "postgres_data" for use with docker
+```
+
 #Docker
 ```bash
 docker compose up
 docker ps
 docker inspect 'idcontainer'
-```
-
-##postgreSQL
-```bash
-In the root folder of the project you must create a folder named "postgres_data" for use with docker
 ```
 
 ##Squelize 
@@ -50,6 +51,7 @@ npm run dev
 ```bash
 Javascript
 Node js
+Express
 Sequelize
 NodeMailer
 
