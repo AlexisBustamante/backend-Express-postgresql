@@ -11,6 +11,7 @@ Use [git](https://git-scm.com/) to clone the project.
 git clone https://github.com/AlexisBustamante/backend-Express-postgresql
 ```
 ## 🤚Important!
+configure .env.example
 
 #Node
 this proyect use node version 14.x
@@ -29,6 +30,12 @@ docker inspect 'idcontainer'
 ##postgreSQL
 ```bash
 In the root folder of the project you must create a folder named "postgres_data" for use with docker
+```
+
+##Squelize 
+initial migration.
+```bash
+npm run migrations:run
 ```
 
 ## ☄️ Usage
