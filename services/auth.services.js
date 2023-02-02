@@ -66,18 +66,20 @@ class AuthService {
     }
 
     const payload = {sub:user.id}
-    const token = jwt.sign(payload,config.jwtSecret);
+    const token = jwt.sign(payload,config.jwtSecret,{expiresIn:'15min'});
 
     //a este link se le envia al usuario para que desde el 
     //frontend tome el token y cmabie us contrasdeña
-    
-    const link= `https://myfrontend.com/recovery?token=${token}`
+    const link= `https://myfrontend.com/recovery?token=${token}`;
+
+    //en el frontend se debe capturar el token, y luego enviar el token
+    await service.update(user.id,{recoveryToken:token})
 
     const mail = {
       from: config.usrEmail, // sender address
       to: user.email, // list of receivers
       subject: 'Email for recovery password', // Subject line
-      html: '<b>Ingrea a este link => </b>', // html body
+      html: `ingresa a siguiente link => ${link}`, // html body
     }
 
     const rta =await this.sendMail(mail);
