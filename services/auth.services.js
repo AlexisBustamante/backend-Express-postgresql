@@ -66,7 +66,7 @@ class AuthService {
     }
 
     const payload = {sub:user.id}
-    const token = jwt.sign(payload,config.jwtSecret,{expiresIn:'15min'});
+    const token = jwt.sign(payload,config.jwtSecretRecovery,{expiresIn:'15min'});
 
     //a este link se le envia al usuario para que desde el 
     //frontend tome el token y cmabie us contrasdeña

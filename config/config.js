@@ -13,7 +13,8 @@ const config = {
   apiKey: process.env.API_KEY,
   jwtSecret: process.env.JWT_SECRET,
   usrEmail:process.env.USR_EMAIL,
-  usrPass:process.env.USER_PASSWORD_APP
+  usrPass:process.env.USER_PASSWORD_APP,
+  jwtSecretRecovery: process.env.JWT_SECRET_RECOVERY,
 }
 
 module.exports = { config };
