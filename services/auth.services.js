@@ -37,13 +37,8 @@ class AuthService {
       token,
     }; //el usuer que entrega el middelware de passport
   }
-  async sendMail(email) {
-    //primero verificamos si el correo existe en la BD
-    const user = await service.findByEmail(email);
-    if (!user) {
-      throw boom.unauthorized();
-    }
 
+  async sendMail(infoMail) {
     //se crea el transporter de quien enviará el correo
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
@@ -55,20 +50,38 @@ class AuthService {
       },
     });
 
-    //por el momento me envio el correo a mi mismo.
-    let info = await transporter.sendMail({
-      from: config.usrEmail, // sender address
-      to: user.email, // list of receivers
-      subject: 'HOLA MUNDO!! desde NODE and EXPRESS', // Subject line
-      text: 'HOLA MUNDO!! desde NODE and EXPRESS', // plain text body
-      html: 'here must contain html and css ', // html body
-    });
-
+    await transporter.sendMail(infoMail);
+     //por el momento me envio el correo a mi mismo.
     //console.log("Message sent: %s", info.messageId);
     // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
     // Preview only available when sending through an Ethereal account
     //console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
     return { message: 'mail sended' };
+  }
+
+  async sendRecovery(email){
+    const user = await service.findByEmail(email);
+    if (!user) {
+      throw boom.unauthorized();
+    }
+
+    const payload = {sub:user.id}
+    const token = jwt.sign(payload,config.jwtSecret);
+
+    //a este link se le envia al usuario para que desde el 
+    //frontend tome el token y cmabie us contrasdeña
+    
+    const link= `https://myfrontend.com/recovery?token=${token}`
+
+    const mail = {
+      from: config.usrEmail, // sender address
+      to: user.email, // list of receivers
+      subject: 'Email for recovery password', // Subject line
+      html: '<b>Ingrea a este link => </b>', // html body
+    }
+
+    const rta =await this.sendMail(mail);
+    return rta;
   }
 }
 
