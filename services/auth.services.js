@@ -85,6 +85,31 @@ class AuthService {
     const rta =await this.sendMail(mail);
     return rta;
   }
+  
+
+  async changePassword(token,newPassword) {
+    try {
+
+      //el payload tiene el identificador del usuario que viene en el token
+      const payload =jwt.verify(token,config.jwtSecretRecovery);
+      //payload.sub es el id del usuario entregado por el token
+      const user = await service.findOne(payload.sub);
+    
+      if (user.recoveryToken!==token) {
+        throw boom.unauthorized('token expired.');
+      }
+
+
+      const hash = await bcrypt.hash(newPassword,10);
+
+      await service.update(user.id,{recoveryToken:null,password:hash});
+  
+      return{message:'password updated successfully'}
+
+    } catch (error) {
+      throw boom.unauthorized();
+    }
+  }
 }
 
 module.exports = AuthService;
