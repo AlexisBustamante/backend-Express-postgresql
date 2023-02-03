@@ -92,7 +92,7 @@ class AuthService {
 
       //el payload tiene el identificador del usuario que viene en el token
       const payload =jwt.verify(token,config.jwtSecretRecovery);
-      //payload.sub es el id del usuario entregado por el token
+      //payload.sub es el id del usuario entregado por el
       const user = await service.findOne(payload.sub);
     
       if (user.recoveryToken!==token) {
