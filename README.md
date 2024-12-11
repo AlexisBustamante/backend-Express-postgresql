@@ -36,6 +36,8 @@ docker inspect 'idcontainer'
 ##Squelize 
 initial migration.
 ```bash
+echo $NODE_ENV
+export NODE_ENV=development
 npm run migrations:run
 ```
 

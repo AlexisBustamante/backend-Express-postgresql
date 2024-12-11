@@ -11,8 +11,9 @@ const passport = require('passport')
 app.use(morgan('tiny'));
 app.use(helmet());
 app.use(express.json());
+app.disable('x-powered-by');
 //para validar desde que aplicaicon pueden preguntar a la api, solo 
-const whitelist = ['http://localhost:8080', 'https://myapp.co'];
+const whitelist = ['http://localhost:8080', 'https://myapp.co','http://localhost:6060'];
 const options = {
   origin: (origin, callback) => {
     if (whitelist.includes(origin) || !origin) {
@@ -20,7 +21,7 @@ const options = {
     } else {
       callback(new Error('no permitido'));
     }
-  }
+  },
 }
 app.use(cors(options));
 require('./utils/auth');
@@ -41,3 +42,8 @@ app.use(errorHandler);
 app.listen(port, () => {
   console.log('Mi port' + port);
 });
+console.table([{
+  JWT_SECRET:process.env.JWT_SECRET,
+  DB_PASSWORD : process.env.DB_PASSWORD,
+  API_KEY:process.env.API_KEY,
+}]);
