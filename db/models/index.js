@@ -4,6 +4,7 @@ const { Category, CategorySchema } = require('./category.model');
 const { Product, ProductSchema } = require('./product.model');
 const { Order, OrderSchema } = require('./order.model');
 const { OrderProduct, OrderProductSchema } = require('./order-product.model');
+const { Incidencias, IncidenciasSchema} = require('./incidencias.model');
 
 //aca se cargaran todos los modelos de las tablas y esquemas
 function setupModels(sequelize) {
@@ -13,7 +14,7 @@ function setupModels(sequelize) {
   Product.init(ProductSchema, Product.config(sequelize));
   Order.init(OrderSchema, Order.config(sequelize));
   OrderProduct.init(OrderProductSchema, OrderProduct.config(sequelize));
-
+  Incidencias.init(IncidenciasSchema,Incidencias.config(sequelize))
   //asociar las relaciones en la iniciación
   User.associate(sequelize.models);
   Customer.associate(sequelize.models);

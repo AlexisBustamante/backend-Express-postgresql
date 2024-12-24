@@ -1,0 +1,101 @@
+<!-- solicitud-recibida.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solicitud Recibida</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      background-color: #ffffff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .header h1 {
+      font-size: 24px;
+      margin: 0;
+      color: #007BFF;
+    }
+    .content {
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    .content p {
+      margin: 0 0 10px;
+    }
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    .table th, .table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    .table th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Solicitud Recibida</h1>
+    </div>
+    <div class="content">
+      <p>Estimado/a:</p>
+      <p>Gracias por enviar su solicitud. Su número de solicitud es:</p>
+      <h2 style="text-align: center; color: #28a745;">{{solicitudId}}</h2>
+      <p>Los detalles de su solicitud son los siguientes:</p>
+      <table class="table">
+        <tr>
+          <th>Nombre</th>
+          <td>{{nombre}}</td>
+        </tr>
+        <tr>
+          <th>Apellidos</th>
+          <td>{{apellidos}}</td>
+        </tr>
+        <tr>
+          <th>Email</th>
+          <td>{{email}}</td>
+        </tr>
+        <tr>
+          <th>Tipo de Evento</th>
+          <td>{{tipoEvento}}</td>
+        </tr>
+        <tr>
+          <th>Mensaje</th>
+          <td>{{mensaje}}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="footer">
+      <p>Este correo es generado automáticamente. Por favor, no responda a este mensaje.</p>
+    </div>
+  </div>
+</body>
+</html>
