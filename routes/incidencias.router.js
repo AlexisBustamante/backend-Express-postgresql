@@ -15,6 +15,7 @@ router.post('/', async (req, res, next) => {
 
       // Procesar datos del formulario público
         const data = req.body;
+        //console.log(data);
         //TODO: debemos guardar los datos.
         const newIncidencia = await service.create({
           nombre:data.nombre,
@@ -30,7 +31,7 @@ router.post('/', async (req, res, next) => {
         .replace('{{nombre}}', data.nombre)
         .replace('{{apellidos}}', data.apellidos)
         .replace('{{email}}', data.email)
-        .replace('{{tipoEvento}}', data.tipoEvento)
+        .replace('{{tipoEvento}}', data.tipo_evento)
         .replace('{{mensaje}}', data.mensaje);
 
         //TODO: debemos ahora enviar el correo de la persona con el numero de solicitud.

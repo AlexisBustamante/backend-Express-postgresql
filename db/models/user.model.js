@@ -46,6 +46,18 @@ const UserSchema = {
     type: DataTypes.DATE,
     defaultValue: Sequelize.NOW
   },
+  avatar:{
+    field: 'avatar',
+    allowNull: false,
+    type: DataTypes.STRING,
+    defaultValue: ''
+  },
+  lastname:{
+    field: 'lastName',
+    allowNull: false,
+    type: DataTypes.STRING,
+    defaultValue: ''
+  }
 }
 
 class User extends Model {
