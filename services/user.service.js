@@ -19,7 +19,7 @@ class UserService {
   async find(id) {
     const queryOptions = {
       include: ['customer'],
-      order: [[orderBy, 'ASC']],//Ordena por defecto por ID en orden ascendente
+      order: [['createdAt', 'DESC']],//Ordena por defecto por ID en orden ascendente
     };
   
     // Si se pasa un ID, excluye el registro con ese ID
