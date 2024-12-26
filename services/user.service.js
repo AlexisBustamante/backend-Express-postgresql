@@ -1,6 +1,7 @@
 const boom = require('@hapi/boom');
 const bcrypt = require('bcrypt');
 const { models } = require('./../libs/sequelize');
+const { Op } = require('sequelize');
 
 class UserService {
   constructor() { }
@@ -15,10 +16,21 @@ class UserService {
     return newUser;
   }
 
-  async find() {
-    const rta = await models.User.findAll({
-      include: ['customer']
-    });
+  async find(id) {
+    const queryOptions = {
+      include: ['customer'],
+    };
+  
+    // Si se pasa un ID, excluye el registro con ese ID
+    if (id) {
+      queryOptions.where = {
+        id: {
+          [Op.ne]: id, // Excluye el registro con el ID proporcionado
+        },
+      };
+    }
+  
+    const rta = await models.User.findAll(queryOptions);
     return rta;
   }
 
