@@ -52,7 +52,7 @@ const UserSchema = {
     type: DataTypes.STRING,
     defaultValue: ''
   },
-  lastname:{
+  lastName:{
     field: 'lastName',
     allowNull: false,
     type: DataTypes.STRING,
