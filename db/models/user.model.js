@@ -57,6 +57,12 @@ const UserSchema = {
     allowNull: false,
     type: DataTypes.STRING,
     defaultValue: ''
+  },
+  estado:{
+    field: 'estado',
+    allowNull: false,
+    type: DataTypes.INTEGER,
+    defaultValue: 0
   }
 }
 

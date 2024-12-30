@@ -50,9 +50,11 @@ class UserService {
   }
 
   async delete(id) {
-    const user = await this.findOne(id);
-    await user.destroy();
-    return { id };
+    //en vez de eliminar desactivamos a los usuarios.
+    let user = await this.findOne(id);
+    let estadoNew = user.estado == 1 ? 0 : 1;
+    const rta = await user.update({ estado:estadoNew });
+    return rta;
   }
 
   async findByEmail(email) {
