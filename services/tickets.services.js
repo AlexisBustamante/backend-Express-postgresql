@@ -9,10 +9,17 @@ class Tickets {
   constructor() {
 
   }
-//   async create(data) {
-//     const newProduct = await models.Product.create(data);
-//     return newProduct;
-//   }
+
+  async create(data) {
+    const newrecord = {
+      titulo:data.titulo,
+      descripcion:data.descripcion,
+      responsable_id:data.responsable_id,
+      estado:'Abierto'
+    }
+    const ticket = await models.Tickets.create(newrecord);
+    return ticket;
+  }
 
   async find(query) {
     const options = {

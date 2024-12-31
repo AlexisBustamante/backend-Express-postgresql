@@ -41,6 +41,18 @@ module.exports = {
         type: Sequelize.TIME,
         allowNull: true,
       },
+      createdAt: {
+        allowNull: false,
+        field: 'createdAt',
+        type: Sequelize.DataTypes.DATE,
+        defaultValue: Sequelize.NOW,
+      },
+      updatedAt: {
+        allowNull: false,
+        field: 'updatedAt',
+        type: Sequelize.DataTypes.DATE,
+        defaultValue: Sequelize.NOW,
+      },
     });
   },
   async down(queryInterface) {

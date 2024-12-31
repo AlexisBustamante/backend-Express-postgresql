@@ -28,6 +28,18 @@ module.exports = {
         onDelete: 'SET NULL',
         onUpdate: 'CASCADE',
       },
+      createdAt: {
+        allowNull: false,
+        field: 'createdAt',
+        type: Sequelize.DataTypes.DATE,
+        defaultValue: Sequelize.NOW,
+      },
+      updatedAt: {
+        allowNull: false,
+        field: 'updatedAt',
+        type: Sequelize.DataTypes.DATE,
+        defaultValue: Sequelize.NOW,
+      },
     });
   },
   async down(queryInterface) {

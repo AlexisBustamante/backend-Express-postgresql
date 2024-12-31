@@ -24,6 +24,18 @@ const ComentariosSchema =  {
     type: DataTypes.TIME,
     allowNull: true,
   },
+  createdAt: {
+    allowNull: false,
+    field: 'createdAt',
+    type: Sequelize.DataTypes.DATE,
+    defaultValue: Sequelize.NOW,
+  },
+  updatedAt: {
+    allowNull: false,
+    field: 'updatedAt',
+    type: Sequelize.DataTypes.DATE,
+    defaultValue: Sequelize.NOW,
+  },
 };
 
 class Comentarios extends Model {
@@ -46,7 +58,7 @@ class Comentarios extends Model {
         sequelize,
         tableName: COMENTARIOS_TABLE,
         modelName: 'Comentarios',
-        timestamp: false
+        timestamp: true
       }
     }
 

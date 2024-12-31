@@ -11,6 +11,18 @@ const Ticket_Ineteresados_Schema = {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
+  createdAt: {
+    allowNull: false,
+    field: 'createdAt',
+    type: Sequelize.DataTypes.DATE,
+    defaultValue: Sequelize.NOW,
+  },
+  updatedAt: {
+    allowNull: false,
+    field: 'updatedAt',
+    type: Sequelize.DataTypes.DATE,
+    defaultValue: Sequelize.NOW,
+  },
 } ;
 
 class Ticket_Interesados extends Model {
