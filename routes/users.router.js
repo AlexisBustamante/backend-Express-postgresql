@@ -10,7 +10,7 @@ const service = new UserService();
 router.get('/all/:id', async (req, res, next) => {
   try {
     console.log(req.params);
-    const users = await service.find(req.params.id);
+    const users = await service.find({id:req.params.id});
     res.json(users);
   } catch (error) {
     next(error);
@@ -20,6 +20,15 @@ router.get('/all/:id', async (req, res, next) => {
 router.get('/', async (req, res, next) => {
   try {
     const users = await service.find();
+    res.json(users);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get('/activos', async (req, res, next) => {
+  try {
+    const users = await service.find( { estado: 0 } );
     res.json(users);
   } catch (error) {
     next(error);

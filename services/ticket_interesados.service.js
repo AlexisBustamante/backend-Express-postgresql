@@ -5,35 +5,25 @@ const { models } = require('../libs/sequelize');
 
 const { TicketsSchema } = require('../db/models/tickets.model');
 
-class Tickets {
+class Ticket_interesados {
   constructor() {
 
   }
 
   async create(ticket_insteresados,ticket_id) {
-
     let interesadosReturn = [];
     for (let interesado of ticket_insteresados) {
-
-        let recordfind = {ticket_id,usuario_id:interesado.usuario_id};
+        let recordfind = {ticket_id,usuario_id:interesado.id};
         let tk_int = await this.findOne(recordfind);
-        console.log(tk_int);
         if(!tk_int){
-            const newRecord = await models.Ticket_interesados.save(recordfind);
+            const newRecord = await models.Ticket_interesados.create(recordfind);
             interesadosReturn.push(newRecord);
-            console.log('se crea ',newRecord);
         }else{
-            console.log('ya existe, nose crea nada.');
         }
         //buscamos si existe.
     }
-    //const ticket = await models.Tickets.create(newrecord);
-    //return ticket;
+    return interesadosReturn;
   }
-
-
-
-
 
   async findOne(data) {
     const options = {
@@ -54,21 +44,21 @@ class Tickets {
     return tk_interesado[0];
   }
 
-//   async update(id, changes) {
-//     const model = await this.findOne(id);
-//     const product = await model.update(changes);
-//     if (!product) {
-//       throw boom.notFound('product not found');
-//     }
-//     return product;
-//   }
+  async update(id, changes) {
+    const model = await this.findOne(id);
+    const record = await model.update(changes);
+    if (!record) {
+      throw boom.notFound('product not found');
+    }
+    return record;
+  }
 
-//   async delete(id) {
-//     const product = await this.findOne(id);
-//     await product.destroy();
-//     return { rta: true };
-//   }
+  async delete(id) {
+    const record = await this.findOne(id);
+    await record.destroy();
+    return { rta: true };
+  }
 
 }
 
-module.exports = Tickets;
+module.exports = Ticket_interesados;

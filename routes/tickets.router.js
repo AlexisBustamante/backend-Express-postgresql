@@ -4,8 +4,11 @@ const validatorHandler = require('./../middlewares/validator.handler');
 const {checkRoles}= require('./../middlewares/auth.handler');
 const router = express.Router();
 
- const Ticket_Interesados = require('./../services/ticket_interesados.service');
- const serviceInteresados = new Ticket_Interesados();
+const Comentarios = require('./../services/comentarios.service');
+const serviceComentarios = new Comentarios();
+
+const Ticket_Interesados = require('./../services/ticket_interesados.service');
+const serviceInteresados = new Ticket_Interesados();
 
 const Tickets = require('./../services/tickets.services');
 const service = new Tickets();
@@ -22,22 +25,45 @@ async (req, res, next) => {
   }
 });
 
+router.get('/detalle/:id', 
+  passport.authenticate('jwt', { session: false }),
+  async (req, res, next) => {
+  //   validatorHandler(queryProductSchema, 'query');
+    try {
+      const tickets = await service.find({ id : req.params.id });
+      res.json(tickets);
+    } catch (error) {
+      next(error);
+    }
+  });
+
+
+//tickets del usuario.
+router.get('/user/:id', 
+  passport.authenticate('jwt', { session: false }),
+  async (req, res, next) => {
+  //   validatorHandler(queryProductSchema, 'query');
+    try {
+      //req.user existe en la peticion :)
+      //console.log(req.params.id);
+      const tickets = await service.find({ usuario_id : req.params.id });
+      res.json(tickets);
+    } catch (error) {
+      next(error);
+    }
+  });
+
 router.post('/', 
   passport.authenticate('jwt', { session: false }),
   async (req, res, next) => {
   //   validatorHandler(queryProductSchema, 'query');
     try {
-
-      const body = req.body;
+      let body = req.body;
       //crear el ticket
-      //const tickets = await service.create(body);
-      //console.log(body.ticket_insteresados);
-      //crear los interesados
-      const interesados = await serviceInteresados.create(body.ticket_insteresados,10);
-      //crear el primer comentario.
-      //res.json(tickets);
-      res.json({msg:"save record"});
+       const tickets = await service.create(body);
+       const interesados = await serviceInteresados.create(body.ticket_insteresados,tickets.id);
 
+      res.json({msg:"save records"});
     } catch (error) {
       next(error);
     }

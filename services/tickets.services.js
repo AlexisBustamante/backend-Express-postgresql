@@ -21,7 +21,16 @@ class Tickets {
     return ticket;
   }
 
-  async find(query) {
+  async find(query = {}) {
+    console.log(query);
+    let where = {};//aca podemos ir agregando los filtros que necesitemos
+    if (query.usuario_id != null)  {
+      where.responsable_id = query.usuario_id
+    }
+    if (query.id != null) {
+      where.id = query.id
+    }
+
     const options = {
       include: [
         {
@@ -39,36 +48,49 @@ class Tickets {
           model:models.User,
           as:'responsable',
           attributes:['id','name','lastName','avatar','role','email']
+        },
+        {
+          model:models.Comentarios,
+          order: [['ceatedAt', 'DESC']],
+          as:'comentarios',
+          include: [
+            {
+              model: models.User, // Relación con User
+              as: 'users', // Alias definido en el modelo Ticket_interesados
+              attributes:['id','name','lastName','avatar','role','email'],
+              
+            }
+          ]
         }
         ],
-      where: {}
+
+      where, 
+      order: [['id', 'DESC']]
     }
     //console.log(models);
     const tickets = await models.Tickets.findAll(options);
     return tickets;
   }
 
+  async findOne(id) {
+    const record = await models.Tickets.findByPk(id);
+    if (!record) {
+      throw boom.notFound('product not found');
+    }
+    if (record.isBlock) {
+      throw boom.conflict('product is block');
+    }
+    return record;
+  }
 
-
-//   async findOne(id) {
-//     const product = await models.Products.findByPk(id);
-//     if (!product) {
-//       throw boom.notFound('product not found');
-//     }
-//     if (product.isBlock) {
-//       throw boom.conflict('product is block');
-//     }
-//     return product;
-//   }
-
-//   async update(id, changes) {
-//     const model = await this.findOne(id);
-//     const product = await model.update(changes);
-//     if (!product) {
-//       throw boom.notFound('product not found');
-//     }
-//     return product;
-//   }
+  async update(id, changes) {
+    const model = await this.findOne(id);
+    const record = await model.update(changes);
+    if (!record) {
+      throw boom.notFound('product not found');
+    }
+    return record;
+  }
 
 //   async delete(id) {
 //     const product = await this.findOne(id);

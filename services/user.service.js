@@ -2,6 +2,7 @@ const boom = require('@hapi/boom');
 const bcrypt = require('bcrypt');
 const { models } = require('./../libs/sequelize');
 const { Op } = require('sequelize');
+const { Sequelize, DataTypes } = require('sequelize');
 
 class UserService {
   constructor() { }
@@ -16,20 +17,24 @@ class UserService {
     return newUser;
   }
 
-  async find(id) {
+  async find(filter) {
     const queryOptions = {
       include: ['customer'],
       order: [['createdAt', 'DESC']],//Ordena por defecto por ID en orden ascendente
+      attributes: {
+        exclude: ['password'],//excluyo el campo password
+      },
     };
-  
-    // Si se pasa un ID, excluye el registro con ese ID
-    if (id) {
-      queryOptions.where = {
-        id: {
-          [Op.ne]: id, // Excluye el registro con el ID proporcionado
-        },
-      };
+
+    let where = {};//aca podemos ir agregando los filtros que necesitemos
+    if (filter.estado != null)  {
+      where.estado = filter.estado
     }
+    if (filter.id != null) {//el id se pasa para excluir.
+      where.id = {[Op.ne]: filter.id};
+    }
+    queryOptions.where = where
+    // Si se pasa un ID, excluye el registro con ese ID
   
     const rta = await models.User.findAll(queryOptions);
     return rta;
