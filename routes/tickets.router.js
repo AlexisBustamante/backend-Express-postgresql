@@ -68,6 +68,20 @@ router.post('/',
       next(error);
     }
   });
-  
 
+  router.post('/comentario', 
+    passport.authenticate('jwt', { session: false }),
+    async (req, res, next) => {
+    //   validatorHandler(queryProductSchema, 'query');
+    //guardar el comentario del ticket.
+      try {
+        let body = req.body;
+         //crear el ticket
+         const comentario = await serviceComentarios.create(body);
+         //aca creamos el comentario.
+          res.json({msg:"save records",comentario});
+      } catch (error) {
+        next(error);
+      }
+    });
 module.exports = router;
