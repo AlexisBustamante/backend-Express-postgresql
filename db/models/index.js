@@ -8,6 +8,7 @@ const { Incidencias, IncidenciasSchema } = require('./incidencias.model');
 const { Tickets, TicketsSchema } = require('./tickets.model');
 const { Comentarios, ComentariosSchema } = require('./comentarios.model');
 const { Ticket_Interesados, Ticket_Ineteresados_Schema } = require('./ticket_interesados.model');
+const { Marcaciones, MarcacionesSchema } = require('./marcaciones.model');
 
 //aca se cargaran todos los modelos de las tablas y esquemas
 function setupModels(sequelize) {
@@ -21,6 +22,7 @@ function setupModels(sequelize) {
   Tickets.init(TicketsSchema,Tickets.config(sequelize));
   Comentarios.init(ComentariosSchema,Comentarios.config(sequelize));
   Ticket_Interesados.init(Ticket_Ineteresados_Schema,Ticket_Interesados.config(sequelize));
+  Marcaciones.init(MarcacionesSchema,Marcaciones.config(sequelize));
 
   //asociar las relaciones en la iniciación
   User.associate(sequelize.models);
@@ -31,6 +33,7 @@ function setupModels(sequelize) {
   Tickets.associate(sequelize.models);
   Comentarios.associate(sequelize.models);
   Ticket_Interesados.associate(sequelize.models);
+  Marcaciones.associate(sequelize.models);
 }
 
 module.exports = setupModels;
