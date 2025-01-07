@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marcación Registrada</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+      color: #333 !important;
+    }
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      background-color: #ffffff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .header h1 {
+      font-size: 24px;
+      margin: 0;
+      color: #28a745;
+    }
+    .content {
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    .content p {
+      margin: 0 0 10px;
+    }
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    .table th, .table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    .table th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Marcación Registrada</h1>
+    </div>
+    <div class="content">
+      <p>Estimado/a: <b>{{nombre}}</b> </p>
+      <p>Se ha registrado su marcación correctamente. Los detalles son los siguientes:</p>
+      <table class="table">    
+        <tr>
+          <th>Tipo de Marcación</th>
+          <td>{{tipoMarcacion}}</td>
+        </tr>
+        <tr>
+          <th>Fecha</th>
+          <td>{{fecha}}</td>
+        </tr>
+        <tr>
+          <th>Hora</th>
+          <td>{{hora}}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="footer">
+      <p>Este mensaje fue generado automáticamente. Por favor, no responda a este correo.</p>
+    </div>
+  </div>
+</body>
+</html>

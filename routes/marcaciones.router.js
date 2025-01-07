@@ -3,13 +3,18 @@ const passport = require('passport');
 const MarcacionesServices = require('../services/marcaciones.services');
 const router = express.Router();
 const service = new MarcacionesServices();
-
+const nodemailer = require('nodemailer');
+const fs = require('fs').promises;
+const AuthService = require('./../services/auth.services');
+const serviceAuth = new AuthService();
+const { config } = require('./../config/config'); ///tengo la config para tener secret
+const { formatDate } = require('./../utils/dateUtils.js');
 
 router.get('/',
 passport.authenticate('jwt', { session: false }),
   async (req, res, next) => {
     try {
-      const record = await service.findAllRecords();
+      const record = await service.find({fecha: req.query.fecha});
       res.json(record);
     } catch (error) {
       next(error);
@@ -21,7 +26,8 @@ router.get('/:id',
     passport.authenticate('jwt', { session: false }),
       async (req, res, next) => {
         try {
-          const record = await service.find({ usuario_id: req.params.id }); //await service.findOne(req.params.id);
+          const hoy = new Date(); // Fecha actual
+          const record = await service.find({ usuario_id: req.params.id,fecha : hoy }); //await service.findOne(req.params.id);
           res.json(record);
         } catch (error) {
           next(error);
@@ -32,8 +38,7 @@ router.get('/:id',
 router.post('/',
 passport.authenticate('jwt', { session: false }),
   async (req, res, next) => {
-    try {
-
+    try {      
             const hoy = new Date(); // Fecha actual
             const record = await service.find({ usuario_id: req.body.usuario_id , tipo:req.body.tipo,fecha:hoy }); //await service.findOne(req.params.id);
         if(record.length > 0){
@@ -54,9 +59,25 @@ passport.authenticate('jwt', { session: false }),
         
         const newrecord = await service.create(newRecord);
 
-        //SI NO EXISTE EL REGISTRO SE DEBE CREAR.
-         //const record = await service.create(req.body);
+        //cargo el Template para reemplazar las variables.
+        const htmlTemplate = await fs.readFile('./notificar-marcacion.html', 'utf8');
+        //TODO : debemos notificar con un correo.
+        const htmlContent = htmlTemplate
+        .replace('{{nombre}}', req.user.name+' '+req.user.lastName)
+        .replace('{{tipoMarcacion}}', newrecord.tipo)
+        .replace('{{fecha}}',formatDate(newrecord.fecha))
+        .replace('{{hora}}', newrecord.hora)
 
+        //enviar el correo
+        const mail = {
+          from: config.usrEmail, // sender address
+          to: req.user.email, // list of receivers
+          subject: 'Registro de Marcación', // Subject line
+          html: htmlContent, // html body
+        }
+
+        //ACA ENVIAMOS EL CORREO A AL PERSONA QUE INGRESO LA SOLICITUD
+         const r = await serviceAuth.sendMail(mail);
          res.json(newrecord);
     } catch (error) {
       next(error);
