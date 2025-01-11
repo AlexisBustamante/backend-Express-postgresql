@@ -1,5 +1,6 @@
 const pool = require('../libs/postgres.pool');
 const { models } = require('./../libs/sequelize');
+const { Op } = require('sequelize'); // Asegúrate de importar Op
 
 class MarcacionesServices {
     constructor() {
@@ -27,16 +28,26 @@ class MarcacionesServices {
 
     async find(query = {}) {
 
+
         let where = {};
-        if (query.usuario_id != null) {
-            where.usuario_id = query.usuario_id
-        }
+
         if (query.tipo != null) {
             where.tipo = query.tipo
         }
         if (query.fecha != null) {
             where.fecha = query.fecha
         }
+        if (query.between != null) {
+            if (query.between.startDate && query.between.endDate) {
+                where.fecha = {
+                    [Op.between]: [query.between.startDate, query.between.endDate]
+                };
+            }
+        }
+        if (query.usuario_id != null) {
+            where.usuario_id = query.usuario_id
+        }
+        
         const options = {
             include: [
                 {
@@ -45,9 +56,9 @@ class MarcacionesServices {
                     attributes:['id','name','lastName','avatar','role','email']
                   },
             ],
-            where
+            where,
+            order: [['fecha', 'DESC']] 
         }
-
         
         const records = await models.Marcaciones.findAll(options);
         if (!records) {

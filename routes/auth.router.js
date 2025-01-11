@@ -37,8 +37,8 @@ router.post(
   validatorHandler(changePasswordAuthSchema, 'body'),
   async (req, res, next) => {
     try {
-      const { token, newPassword } = req.body;
-      const rta = await service.changePassword(token, newPassword);
+      const { token, newPassword, usaRecovery } = req.body;
+      const rta = await service.changePassword(token, newPassword,usaRecovery);
       res.json(rta);
     } catch (error) {
       next(error);

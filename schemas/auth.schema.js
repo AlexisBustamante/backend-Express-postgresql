@@ -19,6 +19,7 @@ const recoveryAuthSchema = Joi.object({
 const changePasswordAuthSchema = Joi.object({
   token: token.required(),
   newPassword: newPassword.required(),
+  usaRecovery: Joi.boolean(),
 });
 
 module.exports = {

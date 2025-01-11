@@ -90,21 +90,19 @@ class AuthService {
   }
   
 
-  async changePassword(token,newPassword) {
+  async changePassword(token,newPassword, usaRecovery) {
     try {
 
       //el payload tiene el identificador del usuario que viene en el token
-      const payload =jwt.verify(token,config.jwtSecretRecovery);
+      const payload = jwt.verify(token,config.jwtSecretRecovery);
       //payload.sub es el id del usuario entregado por el
       const user = await service.findOne(payload.sub);
-    
-      if (user.recoveryToken!==token) {
+      //esto se usa con recovery.
+      if (user.recoveryToken!==token && usaRecovery) {
         throw boom.unauthorized('token expired.');
       }
 
-
       const hash = await bcrypt.hash(newPassword,10);
-
       await service.update(user.id,{recoveryToken:null,password:hash});
   
       return{message:'password updated successfully'}

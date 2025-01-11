@@ -9,6 +9,7 @@ const AuthService = require('./../services/auth.services');
 const serviceAuth = new AuthService();
 const { config } = require('./../config/config'); ///tengo la config para tener secret
 const { formatDate } = require('./../utils/dateUtils.js');
+const moment = require("moment-timezone");
 
 router.get('/',
 passport.authenticate('jwt', { session: false }),
@@ -85,6 +86,83 @@ passport.authenticate('jwt', { session: false }),
   }
 );
 
+router.post('/buscar', async (req, res, next) => {
+    try {
+      const requiredTypes = ["entrada", "salida_almuerzo", "entrada_almuerzo", "salida"];
+
+      const year = req.body.year;
+      const month = req.body.month;
+      const validatedMonth = month;
+
+      const timezone = "America/Santiago";
+
+      const startDate = moment.tz(`${year}-${validatedMonth}-01 00:00:00`, timezone);
+      const lastDayOfMonth = moment.tz(`${year}-${validatedMonth}-01`, timezone).endOf('month').date();
+      const endDate  =moment.tz(`${year}-${validatedMonth}-${lastDayOfMonth} 00:00:00`, timezone);
+
+      const between = {
+        startDate,
+        endDate,
+      }
+
+      const records = await service.find({
+        between,
+        usuario_id: req.body.usuario_id,
+      });
+
+      //aca agrupamos los registros pr fecha.
+      // Agrupar por fecha y usuario
+      const grouped = records.reduce((acc, record) => {
+        const date = record.fecha;
+        const userId = record.usuario_id;
+
+        if (!acc[date]) acc[date] = {};
+        if (!acc[date][userId]) {
+          acc[date][userId] = {
+            usuario: record.users,
+            marcaciones: [],
+          };
+        }
+        acc[date][userId].marcaciones.push(record);
+        return acc;
+      }, {});
+
+      // Completar marcaciones faltantes
+      Object.keys(grouped).forEach((date) => {
+        Object.keys(grouped[date]).forEach((userId) => {
+          const marcaciones = grouped[date][userId].marcaciones;
+
+          // Crear un mapa por tipo de marcación
+          const marcacionesByType = marcaciones.reduce((map, marcacion) => {
+            map[marcacion.tipo] = marcacion;
+            return map;
+          }, {});
+
+          // Completar tipos faltantes
+          const completedMarcaciones = requiredTypes.map((tipo) => {
+            return (
+              marcacionesByType[tipo] || {
+                id: null,
+                fecha: date,
+                hora: null,
+                tipo,
+                geolocalizacion: null,
+                usuario_id: parseInt(userId),
+                users: grouped[date][userId].usuario,
+              }
+            );
+          });
+
+          grouped[date][userId].marcaciones = completedMarcaciones;
+        });
+      });
+
+    res.json(grouped);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 
 
