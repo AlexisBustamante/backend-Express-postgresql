@@ -32,7 +32,6 @@ class AuthService {
       lastName:user.lastName,
       email:user.email
     };
-    console.log(payload);
     const token = jwt.sign(payload, config.jwtSecret);
 
     return {

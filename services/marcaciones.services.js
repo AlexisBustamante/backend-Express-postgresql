@@ -1,6 +1,7 @@
+const id = require('faker/lib/locales/id_ID');
 const pool = require('../libs/postgres.pool');
 const { models } = require('./../libs/sequelize');
-const { Op } = require('sequelize'); // Asegúrate de importar Op
+const { Model, Op, DataTypes, Sequelize } = require('sequelize');
 
 class MarcacionesServices {
     constructor() {
@@ -57,7 +58,7 @@ class MarcacionesServices {
                   },
             ],
             where,
-            order: [['fecha', 'DESC']] 
+            order: [['fecha', 'DESC'],['id','ASC']] 
         }
         
         const records = await models.Marcaciones.findAll(options);
@@ -65,6 +66,14 @@ class MarcacionesServices {
             throw boom.notFound('Marcaciones not found');
         }
         return records;
+    }
+
+    async getForDashboard() {
+        const result = await models.Marcaciones.findAll({
+            attributes: ['tipo', [Sequelize.fn('COUNT', Sequelize.col('tipo')), 'count']],
+            group: ['tipo'],
+          });
+        return result;
     }
 }
 

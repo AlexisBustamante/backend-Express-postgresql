@@ -23,7 +23,7 @@ passport.authenticate('jwt', { session: false }),
   }
 );
 
-router.get('/:id',
+router.get('/user/:id',
     passport.authenticate('jwt', { session: false }),
       async (req, res, next) => {
         try {
@@ -86,7 +86,7 @@ passport.authenticate('jwt', { session: false }),
   }
 );
 
-router.post('/buscar', async (req, res, next) => {
+router.post('/buscar', passport.authenticate('jwt', { session: false }),async (req, res, next) => {
     try {
       const requiredTypes = ["entrada", "salida_almuerzo", "entrada_almuerzo", "salida"];
 
@@ -98,7 +98,7 @@ router.post('/buscar', async (req, res, next) => {
 
       const startDate = moment.tz(`${year}-${validatedMonth}-01 00:00:00`, timezone);
       const lastDayOfMonth = moment.tz(`${year}-${validatedMonth}-01`, timezone).endOf('month').date();
-      const endDate  =moment.tz(`${year}-${validatedMonth}-${lastDayOfMonth} 00:00:00`, timezone);
+      const endDate  = moment.tz(`${year}-${validatedMonth}-${lastDayOfMonth} 00:00:00`, timezone);
 
       const between = {
         startDate,
@@ -165,7 +165,18 @@ router.post('/buscar', async (req, res, next) => {
 );
 
 
-
+router.get('/dashboard',
+  passport.authenticate('jwt', { session: false }),
+    async (req, res, next) => {
+      try {
+        let result = {};
+        result.totales = await service.getForDashboard();        
+        res.json(result);
+      } catch (error) {
+        next(error);
+      }
+    }
+  );
 
 
 
