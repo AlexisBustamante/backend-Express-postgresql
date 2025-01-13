@@ -6,6 +6,10 @@ const formatDate = (date) => {
   return date2.toLocaleDateString('es-ES', options);
 };
 
+ const formatddmmyyyy = (date) => {
+  const [year, month, day] = date.split("-");
+  return `${day}/${month}/${year}`;
+};
    function obtenerFechaHora(createdAt) {
     const opciones = {
       weekday: 'long',   // Nombre completo del día
@@ -28,5 +32,6 @@ const formatDate = (date) => {
 
   module.exports = {
     formatDate,
-    obtenerFechaHora
+    obtenerFechaHora,
+    formatddmmyyyy
   };
