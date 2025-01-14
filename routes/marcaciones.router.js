@@ -60,7 +60,14 @@ router.post('/',
         tipo: req.body.tipo,
         fecha: hoy,
         hora: horaLocal, // Hora actual en formato HH:mm:ss
+        geolocalizacion: req.body.geolocalizacion
       };
+
+      let partes = newRecord.geolocalizacion.split(", ");
+
+      // Asignar latitud y longitud a variables separadas
+      let latitud = parseFloat(partes[0]);
+      let longitud = parseFloat(partes[1]);
 
       const newrecord = await service.create(newRecord);
 
@@ -71,8 +78,9 @@ router.post('/',
         .replace('{{nombre}}', req.user.name + ' ' + req.user.lastName)
         .replace('{{tipoMarcacion}}', newrecord.tipo)
         .replace('{{fecha}}', formatddmmyyyy(newrecord.fecha))
-        .replace('{{hora}}', newrecord.hora)
-
+        .replace('{{hora}}', hora)
+        .replace('{{latitud}}', latitud)
+        .replace('{{longitud}}', longitud)
       //enviar el correo
       const mail = {
         from: config.usrEmail, // sender address
