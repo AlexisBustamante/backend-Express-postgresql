@@ -78,14 +78,14 @@ router.post('/',
         .replace('{{nombre}}', req.user.name + ' ' + req.user.lastName)
         .replace('{{tipoMarcacion}}', newrecord.tipo)
         .replace('{{fecha}}', formatddmmyyyy(newrecord.fecha))
-        .replace('{{hora}}', hora)
+        .replace('{{hora}}', newrecord.hora)
         .replace('{{latitud}}', latitud)
         .replace('{{longitud}}', longitud)
       //enviar el correo
       const mail = {
         from: config.usrEmail, // sender address
         to: req.user.email, // list of receivers
-        subject: 'Registro de Marcación', // Subject line
+        subject: 'Registro de Marcación - '+ String(newrecord.tipo).toUpperCase(), // Subject line
         html: htmlContent, // html body
       }
 

@@ -8,6 +8,12 @@ const port = process.env.PORT || 3000;
 const morgan = require('morgan');
 const helmet = require('helmet');
 const passport = require('passport')
+const path = require('path');
+
+const staticPath = path.join(__dirname, 'dist'); // Asegúrate de que 'dist' sea tu directorio de build de Vite
+app.use(express.static(staticPath));
+
+
 app.use(morgan('tiny'));
 app.use(helmet());
 app.use(express.json());
@@ -38,6 +44,10 @@ app.use(logErrors);
 app.use(boomErrorHandler);
 app.use(errorHandler);
 
+// Redirige todas las demás rutas al index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(staticPath, 'index.html'));
+});
 
 app.listen(port, () => {
   console.log('Mi port' + port);
