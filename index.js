@@ -19,7 +19,7 @@ app.use(helmet());
 app.use(express.json());
 app.disable('x-powered-by');
 //para validar desde que aplicaicon pueden preguntar a la api, solo 
-const whitelist = ['http://localhost:8080', 'https://myapp.co','http://localhost:6060','https://intranet-1-dfnj.onrender.com','https://orlok.netlify.app/'];
+const whitelist = ['http://localhost:8080', 'https://myapp.co','http://localhost:6060','https://intranet-1-dfnj.onrender.com','https://orlok.netlify.app'];
 const options = {
   origin: (origin, callback) => {
     if (whitelist.includes(origin) || !origin) {
