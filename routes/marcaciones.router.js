@@ -10,6 +10,7 @@ const serviceAuth = new AuthService();
 const { config } = require('./../config/config'); ///tengo la config para tener secret
 const { formatddmmyyyy } = require('./../utils/dateUtils.js');
 const moment = require("moment-timezone");
+const { DateTime } = require('luxon');
 
 router.get('/',
   passport.authenticate('jwt', { session: false }),
@@ -55,10 +56,13 @@ router.post('/',
         hour12: false,
       }).format(hoy);
 
+      let  fechaLocal  =  DateTime.now().setZone('America/Santiago');
+      fechaLocal = fechaLocal.toFormat('yyyy-MM-dd')
+      // console.log("FECHA LOCAL",fechaLocal);
       let newRecord = {
         usuario_id: req.body.usuario_id,
         tipo: req.body.tipo,
-        fecha: hoy,
+        fecha: fechaLocal,
         hora: horaLocal, // Hora actual en formato HH:mm:ss
         geolocalizacion: req.body.geolocalizacion
       };
