@@ -1,3 +1,4 @@
+const { DateTime } = require('luxon');
 
 
 const formatDate = (date) => {
@@ -30,8 +31,29 @@ const formatDate = (date) => {
     return  text1;
   }
 
+  function getFechaLocalChile() {
+    let  fechaLocal  =  DateTime.now().setZone('America/Santiago');
+    fechaLocal = fechaLocal.toFormat('yyyy-MM-dd')
+    return fechaLocal;
+  }
+
+  function getHoraLocalChile() {
+    let  fechaLocal  =  DateTime.now().setZone('America/Santiago');
+    let horaLocal = new Intl.DateTimeFormat('es-CL', {
+      timeZone: 'America/Santiago',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false,
+    }).format(fechaLocal);
+
+    return horaLocal;
+  }
+
   module.exports = {
     formatDate,
     obtenerFechaHora,
-    formatddmmyyyy
+    formatddmmyyyy,
+    getFechaLocalChile,
+    getHoraLocalChile
   };

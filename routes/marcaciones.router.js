@@ -8,7 +8,7 @@ const fs = require('fs').promises;
 const AuthService = require('./../services/auth.services');
 const serviceAuth = new AuthService();
 const { config } = require('./../config/config'); ///tengo la config para tener secret
-const { formatddmmyyyy } = require('./../utils/dateUtils.js');
+const { formatddmmyyyy, getFechaLocalChile, getHoraLocalChile } = require('./../utils/dateUtils.js');
 const moment = require("moment-timezone");
 const { DateTime } = require('luxon');
 
@@ -28,8 +28,12 @@ router.get('/user/:id',
   passport.authenticate('jwt', { session: false }),
   async (req, res, next) => {
     try {
-      const hoy = new Date(); // Fecha actual
-      const record = await service.find({ usuario_id: req.params.id, fecha: hoy }); //await service.findOne(req.params.id);
+      //TODO DEBEMOS OBTENER LA FECHA ZONA HORARIA CHILE
+      //const hoy = new Date(); // Fecha actual 
+      let  fechaLocal  =  DateTime.now().setZone('America/Santiago');
+      fechaLocal = fechaLocal.toFormat('yyyy-MM-dd')
+
+      const record = await service.find({ usuario_id: req.params.id, fecha: fechaLocal }); //await service.findOne(req.params.id);
       res.json(record);
     } catch (error) {
       next(error);
@@ -41,23 +45,15 @@ router.post('/',
   passport.authenticate('jwt', { session: false }),
   async (req, res, next) => {
     try {
-      const hoy = new Date(); // Fecha actual
-      const record = await service.find({ usuario_id: req.body.usuario_id, tipo: req.body.tipo, fecha: hoy }); //await service.findOne(req.params.id);
+      let  fechaLocal  =  getFechaLocalChile();
+      let horaLocal = getHoraLocalChile();
+
+      const record = await service.find({ usuario_id: req.body.usuario_id, tipo: req.body.tipo, fecha: fechaLocal }); //await service.findOne(req.params.id);
       if (record.length > 0) {
-        return res.json({ msg: "Existe registro tipo " + req.body.tipo + " para el usuario para la fecha " + hoy });
+        return res.json({ msg: "Existe registro tipo " + req.body.tipo + " para el usuario para la fecha " + fechaLocal });
       }
 
       //para obener corresondiente a la zona horaria.
-      const horaLocal = new Intl.DateTimeFormat('es-CL', {
-        timeZone: 'America/Santiago',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false,
-      }).format(hoy);
-
-      let  fechaLocal  =  DateTime.now().setZone('America/Santiago');
-      fechaLocal = fechaLocal.toFormat('yyyy-MM-dd')
       // console.log("FECHA LOCAL",fechaLocal);
       let newRecord = {
         usuario_id: req.body.usuario_id,

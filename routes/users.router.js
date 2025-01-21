@@ -6,6 +6,10 @@ const { updateUserSchema, createUserSchema, getUserSchema } = require('./../sche
 
 const router = express.Router();
 const service = new UserService();
+const fs = require('fs').promises;
+const AuthService = require('./../services/auth.services');
+const serviceAuth = new AuthService();
+const { config } = require('./../config/config'); ///tengo la config para tener secret
 
 router.get('/all/:id', async (req, res, next) => {
   try {
@@ -52,8 +56,31 @@ router.post('/',
   validatorHandler(createUserSchema, 'body'),
   async (req, res, next) => {
     try {
+      const findByEmail = await service.findByEmail(req.body.email);
+      if (findByEmail) {
+        return res.status(400).json({ message: 'Email already exists' });
+      }
       const body = req.body;
       const newUser = await service.create(body);
+      
+      // si el usuario es creado se enviara un correo con sus credenciales.
+
+      // enviar correo
+      const htmlTemplate = await fs.readFile('./notificar-createUser.html', 'utf8');
+      const htmlContent = htmlTemplate
+      .replace('{{nombre}}', req.body.name +' '+ req.body.lastName)
+      .replace('{{usuario}}', req.body.email)
+      .replace('{{password}}', req.body.password)
+    //enviar el correo
+    const mail = {
+      from: config.usrEmail, // sender address
+      to: req.body.email, // list of receivers
+      subject: 'Credenciales de acceso', // Subject line
+      html: htmlContent, // html body
+    }
+
+      //ACA ENVIAMOS EL CORREO A AL PERSONA QUE INGRESO LA SOLICITUD
+      const r = await serviceAuth.sendMail(mail);
       res.status(201).json(newUser);
     } catch (error) {
       next(error);

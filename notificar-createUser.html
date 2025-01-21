@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Marcación Registrada</title>
+  <title>Credenciales de Acceso</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -57,41 +57,47 @@
       font-size: 14px;
       color: #555;
     }
-    /* Estilos para la imagen del mapa */
-    .map {
-      width: 100%;
-      height: 300px;
+    .button {
+      display: inline-block;
+      background-color: #1b2e7b;
+      color: #ffffff;
+      text-decoration: none;
+      padding: 10px 20px;
       margin-top: 20px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
+      border-radius: 5px;
+      font-weight: bold;
+      text-align: center;
+    }
+    .button:hover {
+      background-color: #142153;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <h1>Marcación Registrada</h1>
+      <h1>Bienvenido/a a Orlok</h1>
     </div>
     <div class="content">
-      <p>Estimado/a: <b>{{nombre}}</b> </p>
-      <p>Se ha registrado su marcación correctamente. Los detalles son los siguientes:</p>
-      <table class="table">    
+      <p>Hola <b>{{nombre}}</b>,</p>
+      <p>Te damos la bienvenida a Orlok. A continuación, encontrarás tus credenciales de acceso al sistema:</p>
+      <table class="table">
         <tr>
-          <th>Tipo de Marcación</th>
-          <td>{{tipoMarcacion}}</td>
+          <th>Usuario</th>
+          <td>{{usuario}}</td>
         </tr>
         <tr>
-          <th>Fecha</th>
-          <td>{{fecha}}</td>
-        </tr>
-        <tr>
-          <th>Hora</th>
-          <td>{{hora}}</td>
+          <th>Contraseña</th>
+          <td>{{password}}</td>
         </tr>
       </table>
+      <p>Puedes modificar tu contraseña directamente desde la aplicación.</p>
+      <p>Para acceder al sistema, haz clic en el siguiente enlace:</p>
+      <a href="https://orlok.netlify.app" class="button">Acceder a Orlok</a>
+      <p>Por favor, recuerda mantener tus credenciales seguras.</p>
     </div>
     <div class="footer">
-      <p>Este mensaje fue generado automáticamente. Por favor, no responda a este correo.</p>
+      <p>Este mensaje fue generado automáticamente. Por favor, no respondas a este correo.</p>
     </div>
   </div>
 </body>
