@@ -13,7 +13,7 @@ const { config } = require('./../config/config'); ///tengo la config para tener 
 
 router.get('/all/:id', async (req, res, next) => {
   try {
-    console.log(req.params);
+    //console.log(req.params);
     const users = await service.find({id:req.params.id});
     res.json(users);
   } catch (error) {
@@ -81,7 +81,7 @@ router.post('/',
 
       //ACA ENVIAMOS EL CORREO A AL PERSONA QUE INGRESO LA SOLICITUD
       const r = await serviceAuth.sendMail(mail);
-      console.log("RESPUESTA",r);
+      //console.log("RESPUESTA",r);
       res.status(201).json(newUser);
     } catch (error) {
       next(error);

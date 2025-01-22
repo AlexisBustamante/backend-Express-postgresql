@@ -52,8 +52,8 @@ app.get('*', (req, res) => {
 app.listen(port, () => {
   console.log('Mi port' + port);
 });
-console.table([{
-  JWT_SECRET:process.env.JWT_SECRET,
-  DB_PASSWORD : process.env.DB_PASSWORD,
-  API_KEY:process.env.API_KEY,
-}]);
+// console.table([{
+//   JWT_SECRET:process.env.JWT_SECRET,
+//   DB_PASSWORD : process.env.DB_PASSWORD,
+//   API_KEY:process.env.API_KEY,
+// }]);

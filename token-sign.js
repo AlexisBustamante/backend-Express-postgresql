@@ -10,4 +10,4 @@ function signToken(payload,secret) {
 }
 
 const token = signToken(payload,secret);
-console.log(token);
+//console.log(token);

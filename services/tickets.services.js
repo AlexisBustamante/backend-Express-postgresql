@@ -22,7 +22,7 @@ class Tickets {
   }
 
   async find(query = {}) {
-    console.log(query);
+    //console.log(query);
     let where = {};//aca podemos ir agregando los filtros que necesitemos
     if (query.usuario_id != null)  {
       where.responsable_id = query.usuario_id
