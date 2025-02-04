@@ -19,7 +19,7 @@ class UserService {
 
   async find(filter) {
     const queryOptions = {
-      include: ['customer'],
+      include: ['customer','cargos','centros'],
       order: [['createdAt', 'DESC']],//Ordena por defecto por ID en orden ascendente
       attributes: {
         exclude: ['password'],//excluyo el campo password
@@ -27,10 +27,10 @@ class UserService {
     };
 
     let where = {};//aca podemos ir agregando los filtros que necesitemos
-    if (filter.estado != null)  {
+    if (filter && filter.estado != null) {
       where.estado = filter.estado
     }
-    if (filter.id != null) {//el id se pasa para excluir.
+    if (filter && filter.id != null) {//el id se pasa para excluir.
       where.id = {[Op.ne]: filter.id};
     }
     queryOptions.where = where
@@ -64,6 +64,7 @@ class UserService {
 
   async findByEmail(email) {
     const rta = await models.User.findOne({
+      include: ['customer','cargos','centros'],
       where: { email }
     });
     return rta;

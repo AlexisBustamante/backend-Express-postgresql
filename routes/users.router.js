@@ -81,7 +81,7 @@ router.post('/',
 
       //ACA ENVIAMOS EL CORREO A AL PERSONA QUE INGRESO LA SOLICITUD
       const r = await serviceAuth.sendMail(mail);
-      //console.log("RESPUESTA",r);
+      // console.log("RESPUESTA",r);
       res.status(201).json(newUser);
     } catch (error) {
       next(error);

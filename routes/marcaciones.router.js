@@ -45,8 +45,15 @@ router.post('/',
   passport.authenticate('jwt', { session: false }),
   async (req, res, next) => {
     try {
-      let  fechaLocal  =  getFechaLocalChile();
-      let horaLocal = getHoraLocalChile();
+
+       let fechaLocal  =  getFechaLocalChile();
+       let horaLocal = getHoraLocalChile();
+      if(req.body.fecha){
+        fechaLocal = req.body.fecha;
+      }
+      if(req.body.hora){
+        horaLocal = req.body.hora;
+      }
 
       const record = await service.find({ usuario_id: req.body.usuario_id, tipo: req.body.tipo, fecha: fechaLocal }); //await service.findOne(req.params.id);
       if (record.length > 0) {
@@ -60,20 +67,19 @@ router.post('/',
         tipo: req.body.tipo,
         fecha: fechaLocal,
         hora: horaLocal, // Hora actual en formato HH:mm:ss
-        geolocalizacion: req.body.geolocalizacion
+        geolocalizacion: req.body.geolocalizacion,
+        observacion: req.body.observacion ?? ''
       };
 
       let partes = newRecord.geolocalizacion.split(", ");
-
       // Asignar latitud y longitud a variables separadas
       let latitud = parseFloat(partes[0]);
       let longitud = parseFloat(partes[1]);
 
       const newrecord = await service.create(newRecord);
-
-      //cargo el Template para reemplazar las variables.
+      // //cargo el Template para reemplazar las variables.
       const htmlTemplate = await fs.readFile('./notificar-marcacion.html', 'utf8');
-      //TODO : debemos notificar con un correo.
+      // //TODO : debemos notificar con un correo.
       const htmlContent = htmlTemplate
         .replace('{{nombre}}', req.user.name + ' ' + req.user.lastName)
         .replace('{{tipoMarcacion}}', newrecord.tipo)
@@ -81,7 +87,7 @@ router.post('/',
         .replace('{{hora}}', newrecord.hora)
         .replace('{{latitud}}', latitud)
         .replace('{{longitud}}', longitud)
-      //enviar el correo
+      // //enviar el correo
       const mail = {
         from: config.usrEmail, // sender address
         to: req.user.email, // list of receivers
@@ -89,9 +95,9 @@ router.post('/',
         html: htmlContent, // html body
       }
 
-      //ACA ENVIAMOS EL CORREO A AL PERSONA QUE INGRESO LA SOLICITUD
-      const r = await serviceAuth.sendMail(mail);
-      res.json(newrecord);
+      // //ACA ENVIAMOS EL CORREO A AL PERSONA QUE INGRESO LA SOLICITUD
+       const r = await serviceAuth.sendMail(mail);
+       res.json(newrecord);
     } catch (error) {
       next(error);
     }
@@ -108,18 +114,22 @@ router.post('/buscar', passport.authenticate('jwt', { session: false }), async (
 
     const timezone = "America/Santiago";
 
-    const startDate = moment.tz(`${year}-${validatedMonth}-01 00:00:00`, timezone);
+    const startDate = moment.tz(`${year}-${validatedMonth}-01 08:00:00`, timezone);
     const lastDayOfMonth = moment.tz(`${year}-${validatedMonth}-01`, timezone).endOf('month').date();
-    const endDate = moment.tz(`${year}-${validatedMonth}-${lastDayOfMonth} 00:00:00`, timezone);
+    const endDate = moment.tz(`${year}-${validatedMonth}-${lastDayOfMonth} 08:00:00`, timezone);
 
     const between = {
       startDate,
       endDate,
     }
 
+    let centro_id = req.body.centro_id ?? null;
+    ///console.table(req.body.centro_id);
+
     const records = await service.find({
       between,
       usuario_id: req.body.usuario_id,
+      centro_id
     });
 
     //aca agrupamos los registros pr fecha.
@@ -190,7 +200,19 @@ router.get('/dashboard',
   }
 );
 
-
+router.patch('/:id',
+  passport.authenticate('jwt', { session: false }),
+    async (req, res, next) => {
+      try {
+        const { id } = req.params;
+        const body = req.body;
+        const newrecord = await service.update(id, body);
+        res.json(newrecord);
+      } catch (error) {
+        next(error);
+      }
+    }
+  );
 
 
 module.exports = router;

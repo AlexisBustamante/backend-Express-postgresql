@@ -8,6 +8,10 @@ const name = Joi.string();
 const lastName = Joi.string();
 const avatar = Joi.string();
 const confirmPassword = Joi.string().min(8);
+const centro_id = Joi.number().integer();
+const cargo_id = Joi.number().integer();
+const rut = Joi.string();
+const lastName2 = Joi.string();
 
 const createUserSchema = Joi.object({
   email: email.required(),
@@ -15,8 +19,12 @@ const createUserSchema = Joi.object({
   role: role.required(),
   name:name.required(),
   lastName:lastName.required(),
+  lastName2:lastName2.required(),
+  rut:rut.required(),
   avatar:avatar.required(),
   confirmPassword:confirmPassword.required(),
+  cargo_id:cargo_id.required(),
+  centro_id:centro_id.required()
 });
 
 
@@ -25,7 +33,11 @@ const updateUserSchema = Joi.object({
   role: role,
   avatar:avatar,
   lastName:lastName,
-  name:name
+  name:name,
+  lastName2:lastName2,
+  rut:rut,
+  cargo_id:cargo_id,
+  centro_id:centro_id
 });
 
 const getUserSchema = Joi.object({

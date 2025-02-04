@@ -63,7 +63,33 @@ const UserSchema = {
     allowNull: false,
     type: DataTypes.INTEGER,
     defaultValue: 0
-  }
+  },
+  lastName2:{
+    field: 'lastName2',
+    allowNull: false,
+    type: DataTypes.STRING,
+    defaultValue: ''
+  },
+  rut:{
+    field: 'rut',
+    allowNull: false,
+    type: DataTypes.STRING,
+    defaultValue: ''
+  },
+  cargo_id: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: 'Cargos', // Hace referencia a la tabla Cargos
+      key: 'id'
+    }
+  },
+  centro_id: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: 'Centros', // Hace referencia a la tabla Cargos
+      key: 'id'
+    }
+  },
 }
 
 class User extends Model {
@@ -74,6 +100,17 @@ class User extends Model {
         as: 'customer',
         foreignKey: 'userId'
       });
+
+      this.belongsTo(models.Cargos, {  // Cambiado a belongsTo porque User pertenece a Cargo
+        as: 'cargos', // El alias que usarás para referenciar a cargo
+        foreignKey: 'cargo_id', // Este es el campo en 'User' que tiene la clave foránea
+      });
+
+      this.belongsTo(models.Centros, {  // Cambiado a belongsTo porque User pertenece a Cargo
+        as: 'centros', // El alias que usarás para referenciar a cargo
+        foreignKey: 'centro_id', // Este es el campo en 'User' que tiene la clave foránea
+      });
+
   }
 
   static config(sequelize) {

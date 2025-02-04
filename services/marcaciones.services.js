@@ -54,11 +54,28 @@ class MarcacionesServices {
                 {
                     model:models.User,
                     as:'users',
-                    attributes:['id','name','lastName','avatar','role','email']
+                    attributes:['id','name','lastName','lastName2','rut','avatar','role','email'],
+                    include: [
+                        {
+                          model: models.Centros, // Relación con Centro
+                          as: 'centros', // Alias definido en el modelo User
+                          attributes: ['id', 'nombre']
+                        },
+                        {
+                          model: models.Cargos, // Relación con Cargo
+                          as: 'cargos', // Alias definido en el modelo User
+                          attributes: ['id', 'nombre']
+                        }
+                      ]
                   },
             ],
             where,
             order: [['fecha', 'DESC'],['id','ASC']] 
+        }
+
+          // Si viene centro_id en la consulta, filtrar usuarios que pertenezcan a ese centro
+        if (query.centro_id != null) {
+            options.include[0].where = { centro_id: query.centro_id };
         }
         
         const records = await models.Marcaciones.findAll(options);
@@ -73,6 +90,18 @@ class MarcacionesServices {
             attributes: ['tipo', [Sequelize.fn('COUNT', Sequelize.col('tipo')), 'count']],
             group: ['tipo'],
           });
+        return result;
+    }
+
+    async update(id, changes) {
+        const model = await this.findOne(id);
+        const result = await model.update(changes);
+        return result;
+    }
+
+    async delete(id) {
+        const model = await this.findOne(id);
+        const result = await model.destroy();
         return result;
     }
 }

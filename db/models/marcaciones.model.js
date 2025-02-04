@@ -49,6 +49,10 @@ const MarcacionesSchema = {
         onDelete: 'SET NULL',
         onUpdate: 'CASCADE',
       },
+      observacion: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
 }
 
 
