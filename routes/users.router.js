@@ -14,7 +14,8 @@ const { config } = require('./../config/config'); ///tengo la config para tener 
 router.get('/all/:id', async (req, res, next) => {
   try {
     //console.log(req.params);
-    const users = await service.find({id:req.params.id});
+    //{id:req.params.id}
+    const users = await service.find();
     res.json(users);
   } catch (error) {
     next(error);
