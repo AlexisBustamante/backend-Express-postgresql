@@ -87,8 +87,6 @@ class AuthService {
     const rta =await this.sendMail(mail);
     return rta;
   }
-  
-
   async changePassword(token,newPassword, usaRecovery) {
     try {
 
@@ -109,6 +107,15 @@ class AuthService {
     } catch (error) {
       throw boom.unauthorized();
     }
+  }
+
+  async verifyToken(token){
+    const decodedToken = jwt.verify(token,config.jwtSecretRecovery);
+
+    if (!decodedToken) {
+      return null;
+    }
+    return decodedToken;
   }
 }
 

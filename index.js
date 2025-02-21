@@ -9,11 +9,12 @@ const morgan = require('morgan');
 const helmet = require('helmet');
 const passport = require('passport')
 const path = require('path');
+const cookieParser = require("cookie-parser");
 
 const staticPath = path.join(__dirname, 'dist'); // Asegúrate de que 'dist' sea tu directorio de build de Vite
 app.use(express.static(staticPath));
 
-
+app.use(cookieParser());
 app.use(morgan('tiny'));
 app.use(helmet());
 app.use(express.json());
@@ -28,6 +29,7 @@ const options = {
       callback(new Error('no permitido'));
     }
   },
+  credentials: true// Permite cookies en las solicitudes
 }
 app.use(cors(options));
 require('./utils/auth');
