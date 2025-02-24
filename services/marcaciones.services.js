@@ -31,6 +31,7 @@ class MarcacionesServices {
 
 
         let where = {};
+        where.tipo = { [Op.in]: ["entrada", "salida"] };
 
         if (query.tipo != null) {
             where.tipo = query.tipo

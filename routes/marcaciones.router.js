@@ -79,10 +79,13 @@ router.post('/',
       const newrecord = await service.create(newRecord);
       // //cargo el Template para reemplazar las variables.
       const htmlTemplate = await fs.readFile('./notificar-marcacion.html', 'utf8');
+
+      let $tipoNom = newrecord.tipo == 'entrada' ? 'Entrada' : 'Salida';
+
       // //TODO : debemos notificar con un correo.
       const htmlContent = htmlTemplate
         .replace('{{nombre}}', req.user.name + ' ' + req.user.lastName)
-        .replace('{{tipoMarcacion}}', newrecord.tipo)
+        .replace('{{tipoMarcacion}}', $tipoNom)
         .replace('{{fecha}}', formatddmmyyyy(newrecord.fecha))
         .replace('{{hora}}', newrecord.hora)
         .replace('{{latitud}}', latitud)
@@ -106,17 +109,18 @@ router.post('/',
 
 router.post('/buscar', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
   try {
-    const requiredTypes = ["entrada", "salida_almuerzo", "entrada_almuerzo", "salida"];
+    //const requiredTypes = ["entrada", "salida_almuerzo", "entrada_almuerzo", "salida"];
 
     const year = req.body.year;
     const month = req.body.month;
-    const validatedMonth = month;
-
-    const timezone = "America/Santiago";
-
-    const startDate = moment.tz(`${year}-${validatedMonth}-01 08:00:00`, timezone);
-    const lastDayOfMonth = moment.tz(`${year}-${validatedMonth}-01`, timezone).endOf('month').date();
-    const endDate = moment.tz(`${year}-${validatedMonth}-${lastDayOfMonth} 08:00:00`, timezone);
+    const startDate  = req.body.fechaInicio; //deberia llegar en formato AAAAMMDD
+    const endDate  = req.body.fechaTermino;
+    //console.log("BODY",req.body);
+    // const validatedMonth = month;
+    // const timezone = "America/Santiago";
+    // const startDate = moment.tz(`${year}-${validatedMonth}-01 08:00:00`, timezone);
+    // const lastDayOfMonth = moment.tz(`${year}-${validatedMonth}-01`, timezone).endOf('month').date();
+    // const endDate = moment.tz(`${year}-${validatedMonth}-${lastDayOfMonth} 08:00:00`, timezone);
 
     const between = {
       startDate,
@@ -149,17 +153,21 @@ router.post('/buscar', passport.authenticate('jwt', { session: false }), async (
       return acc;
     }, {});
 
-    // Completar marcaciones faltantes
+    // Completar marcaciones faltantes ANTES ERAN LAS $ AHORA SE DEJA SOLO ENTRADA Y SALIDA
     Object.keys(grouped).forEach((date) => {
       Object.keys(grouped[date]).forEach((userId) => {
         const marcaciones = grouped[date][userId].marcaciones;
 
         // Crear un mapa por tipo de marcación
         const marcacionesByType = marcaciones.reduce((map, marcacion) => {
-          map[marcacion.tipo] = marcacion;
+          if (["entrada", "salida"].includes(marcacion.tipo)) {
+            map[marcacion.tipo] = marcacion;
+          }
           return map;
         }, {});
 
+          // Tipos requeridos (solo entrada y salida)
+        const requiredTypes = ["entrada", "salida"];
         // Completar tipos faltantes
         const completedMarcaciones = requiredTypes.map((tipo) => {
           return (
