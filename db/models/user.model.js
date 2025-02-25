@@ -90,6 +90,10 @@ const UserSchema = {
       key: 'id'
     }
   },
+  horas_servicio: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0
+  }
 }
 
 class User extends Model {

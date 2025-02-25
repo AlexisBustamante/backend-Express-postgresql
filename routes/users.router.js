@@ -90,12 +90,10 @@ router.post('/',
   }
 );
 
-router.patch('/:id',
-  validatorHandler(getUserSchema, 'params'),
-  validatorHandler(updateUserSchema, 'body'),
+router.post('/editar',
   async (req, res, next) => {
     try {
-      const { id } = req.params;
+      const { id } = req.body;
       const body = req.body;
       const newUser = await service.update(id, body);
       res.json(newUser);

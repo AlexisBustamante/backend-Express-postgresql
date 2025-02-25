@@ -12,6 +12,7 @@ const centro_id = Joi.number().integer();
 const cargo_id = Joi.number().integer();
 const rut = Joi.string();
 const lastName2 = Joi.string();
+const horas_servicio = Joi.string();
 
 const createUserSchema = Joi.object({
   email: email.required(),
@@ -24,7 +25,8 @@ const createUserSchema = Joi.object({
   avatar:avatar.required(),
   confirmPassword:confirmPassword.required(),
   cargo_id:cargo_id.required(),
-  centro_id:centro_id.required()
+  centro_id:centro_id.required(),
+  horas_servicio:horas_servicio.required()
 });
 
 
@@ -37,7 +39,8 @@ const updateUserSchema = Joi.object({
   lastName2:lastName2,
   rut:rut,
   cargo_id:cargo_id,
-  centro_id:centro_id
+  centro_id:centro_id,
+  horas_servicio:horas_servicio
 });
 
 const getUserSchema = Joi.object({

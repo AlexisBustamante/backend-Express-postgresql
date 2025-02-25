@@ -55,7 +55,7 @@ class MarcacionesServices {
                 {
                     model:models.User,
                     as:'users',
-                    attributes:['id','name','lastName','lastName2','rut','avatar','role','email'],
+                    attributes:['id','name','lastName','lastName2','rut','avatar','role','email','horas_servicio'],
                     include: [
                         {
                           model: models.Centros, // Relación con Centro

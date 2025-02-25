@@ -222,5 +222,163 @@ router.patch('/:id',
     }
   );
 
+  router.post('/buscar-resumen', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
+    try {
+      //const requiredTypes = ["entrada", "salida_almuerzo", "entrada_almuerzo", "salida"];
+  
+      // const year = req.body.year;
+      // const month = req.body.month;
+      const startDate  = req.body.fechaInicio; //deberia llegar en formato AAAAMMDD
+      const endDate  = req.body.fechaTermino;
+      //console.log("BODY",req.body);
+      // const validatedMonth = month;
+      // const timezone = "America/Santiago";
+      // const startDate = moment.tz(`${year}-${validatedMonth}-01 08:00:00`, timezone);
+      // const lastDayOfMonth = moment.tz(`${year}-${validatedMonth}-01`, timezone).endOf('month').date();
+      // const endDate = moment.tz(`${year}-${validatedMonth}-${lastDayOfMonth} 08:00:00`, timezone);
+      let obBusqueda = {};
+
+
+      if(req.body.centro_id){
+        obBusqueda.centro_id = req.body.centro_id;
+      }
+
+      if(req.body.centro_id ){
+        obBusqueda.centro_id = req.body.centro_id;
+      }
+
+      if(req.body.usuario_id ){
+        obBusqueda.usuario_id = req.body.usuario_id;
+      }
+
+      const between = {
+        startDate,
+        endDate,
+      }
+      obBusqueda.between = between;
+      ///console.table(req.body.centro_id);
+  
+      const records = await service.find(obBusqueda);
+  
+      const grouped = records.reduce((acc, record) => {
+        const userId = record.usuario_id;
+        const date = record.fecha;
+    
+        if (!acc[userId]) {
+            acc[userId] = {
+                usuario: record.users,
+                fechas: {},
+                totalDiasContemplados: 0, // Cantidad de días con marcaciones
+                totalHorasRestadas: 0, // Total de horas descontadas (1h por día trabajado)
+                totalHorasBrutas: 0, // Total sin restar
+                totalHorasBrutasFormato: "00:00:00",
+                totalHorasAjustadas: 0, // Total con ajuste
+                totalHorasAjustadasFormato: "00:00:00"
+            };
+        }
+    
+        if (!acc[userId].fechas[date]) {
+            acc[userId].fechas[date] = {
+                marcaciones: [],
+                horasTrabajadasBrutas: 0,
+                horasTrabajadasBrutasFormato: "00:00:00",
+                horasTrabajadasAjustadas: 0,
+                horasTrabajadasAjustadasFormato: "00:00:00"
+            };
+        }
+    
+        acc[userId].fechas[date].marcaciones.push(record);
+        return acc;
+    }, {});
+    
+    // Función para formatear segundos a HH:MM:SS
+    const formatTime = (totalSeconds) => {
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+    };
+    
+    // Calcular las horas y días trabajados
+    Object.keys(grouped).forEach((userId) => {
+        let totalSegundosBrutosUsuario = 0;
+        let totalSegundosAjustadosUsuario = 0;
+        let totalDiasContemplados = 0;
+    
+        Object.keys(grouped[userId].fechas).forEach((date) => {
+            const marcaciones = grouped[userId].fechas[date].marcaciones;
+    
+            const marcacionesByType = marcaciones.reduce((map, marcacion) => {
+                if (["entrada", "salida"].includes(marcacion.tipo)) {
+                    map[marcacion.tipo] = marcacion;
+                }
+                return map;
+            }, {});
+    
+            const requiredTypes = ["entrada", "salida"];
+            const completedMarcaciones = requiredTypes.map((tipo) => (
+                marcacionesByType[tipo] || {
+                    id: null,
+                    fecha: date,
+                    hora: null,
+                    tipo,
+                    geolocalizacion: null,
+                    usuario_id: parseInt(userId),
+                    users: grouped[userId].usuario,
+                }
+            ));
+    
+            grouped[userId].fechas[date].marcaciones = completedMarcaciones;
+    
+            let segundosTrabajadosBrutos = 0;
+            let segundosTrabajadosAjustados = 0;
+    
+            if (marcacionesByType["entrada"] && marcacionesByType["salida"]) {
+                const entradaHora = marcacionesByType["entrada"].hora;
+                const salidaHora = marcacionesByType["salida"].hora;
+    
+                if (entradaHora && salidaHora) {
+                    const [h1, m1, s1] = entradaHora.split(":").map(Number);
+                    const [h2, m2, s2] = salidaHora.split(":").map(Number);
+    
+                    const entradaSegundos = h1 * 3600 + m1 * 60 + s1;
+                    const salidaSegundos = h2 * 3600 + m2 * 60 + s2;
+    
+                    segundosTrabajadosBrutos = salidaSegundos - entradaSegundos;
+                    segundosTrabajadosAjustados = segundosTrabajadosBrutos - 3600;
+                    if (segundosTrabajadosAjustados < 0) segundosTrabajadosAjustados = 0;
+                }
+            }
+    
+            grouped[userId].fechas[date].horasTrabajadasBrutas = segundosTrabajadosBrutos / 3600;
+            grouped[userId].fechas[date].horasTrabajadasBrutasFormato = formatTime(segundosTrabajadosBrutos);
+    
+            grouped[userId].fechas[date].horasTrabajadasAjustadas = segundosTrabajadosAjustados / 3600;
+            grouped[userId].fechas[date].horasTrabajadasAjustadasFormato = formatTime(segundosTrabajadosAjustados);
+    
+            totalSegundosBrutosUsuario += segundosTrabajadosBrutos;
+            totalSegundosAjustadosUsuario += segundosTrabajadosAjustados;
+            totalDiasContemplados++;
+        });
+    
+        grouped[userId].totalHorasBrutas = totalSegundosBrutosUsuario / 3600;
+        grouped[userId].totalHorasBrutasFormato = formatTime(totalSegundosBrutosUsuario);
+    
+        grouped[userId].totalHorasAjustadas = totalSegundosAjustadosUsuario / 3600;
+        grouped[userId].totalHorasAjustadasFormato = formatTime(totalSegundosAjustadosUsuario);
+    
+        grouped[userId].totalDiasContemplados = totalDiasContemplados;
+        grouped[userId].totalHorasRestadas = totalDiasContemplados; // 1 hora por cada día trabajado
+    });
+    
+    // 🔥 Ahora grouped[userId] tendrá totalHorasRestadas y totalDiasContemplados
+
+      
+      res.json(grouped);
+    } catch (error) {
+      next(error);
+    }
+  }
+  );
 
 module.exports = router;
