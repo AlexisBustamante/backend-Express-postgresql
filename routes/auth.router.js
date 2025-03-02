@@ -79,7 +79,7 @@ router.post(
 
       res.cookie("authToken", token, {
         httpOnly: true,  // Evita acceso desde JavaScript
-        secure: false, // Solo en HTTPS en producción
+        secure: true, // Solo en HTTPS en producción
         sameSite: "Strict", // Protección contra ataques CSRF
         maxAge: 24 * 60 * 60 * 1000, // 1 día
       });
