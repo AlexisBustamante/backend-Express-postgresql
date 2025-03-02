@@ -208,11 +208,11 @@ router.get('/dashboard',
   }
 );
 
-router.patch('/:id',
+router.post('/editar',
   passport.authenticate('jwt', { session: false }),
     async (req, res, next) => {
       try {
-        const { id } = req.params;
+        const { id } = req.body;
         const body = req.body;
         const newrecord = await service.update(id, body);
         res.json(newrecord);
