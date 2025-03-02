@@ -58,7 +58,7 @@ router.get('/logout', async (req, res, next) => {
 
 
 
-router.get('/user',checkCookie, async (req, res, next) => {
+router.get('/user', async (req, res, next) => {
   try {
     const user = req.cookies?.authToken;
     res.json(user);
