@@ -18,9 +18,8 @@ class AuthService {
     if (!isMatch) {
       throw boom.unauthorized();
     }
-
     delete user.dataValues.password;
-
+//9Z2fvdm4@
     return user;
   }
 
