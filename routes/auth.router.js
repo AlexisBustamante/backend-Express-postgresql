@@ -58,7 +58,7 @@ router.get('/logout', async (req, res, next) => {
 
 
 
-router.get('/user', async (req, res, next) => {
+router.get('/user',checkCookie, async (req, res, next) => {
   try {
     const user = req.cookies?.authToken;
     res.json(user);
@@ -79,8 +79,8 @@ router.post(
 
       res.cookie("authToken", token, {
         httpOnly: true,  // Evita acceso desde JavaScript
-        secure: true, // Solo en HTTPS en producción
-        sameSite: "Strict", // Protección contra ataques CSRF
+        secure: false, // Solo en HTTPS en producción
+        sameSite: "None", // Protección contra ataques CSRF//Strict para pruebas
         maxAge: 24 * 60 * 60 * 1000, // 1 día
       });
 
