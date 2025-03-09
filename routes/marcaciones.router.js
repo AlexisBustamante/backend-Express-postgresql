@@ -393,9 +393,6 @@ router.post('/editar',
         if(req.body.hora){
           horaLocal = req.body.hora;
         }
-        if(req.body.usuario_id){
-          horaLocal = req.body.hora;
-        }
   
         const record = await service.find({ usuario_id: req.body.usuario_id, tipo: req.body.tipo, fecha: fechaLocal }); //await service.findOne(req.params.id);
         if (record.length > 0) {
