@@ -381,4 +381,44 @@ router.post('/editar',
   }
   );
 
+
+  router.post('/crear-x-usuario',
+    passport.authenticate('jwt', { session: false }),
+    async (req, res, next) => {
+      try {
+        //esta funciona es para crear la marcacion entrada por usuario.
+        if(req.body.fecha){
+          fechaLocal = req.body.fecha;
+        }
+        if(req.body.hora){
+          horaLocal = req.body.hora;
+        }
+        if(req.body.usuario_id){
+          horaLocal = req.body.hora;
+        }
+  
+        const record = await service.find({ usuario_id: req.body.usuario_id, tipo: req.body.tipo, fecha: fechaLocal }); //await service.findOne(req.params.id);
+        if (record.length > 0) {
+          return res.json({ success: false, msg: "Existe registro tipo " + req.body.tipo + " para el usuario para la fecha " + fechaLocal });
+        }
+  
+        //para obener corresondiente a la zona horaria.
+        // console.log("FECHA LOCAL",fechaLocal);
+        let newRecord = {
+          usuario_id: req.body.usuario_id,
+          tipo: req.body.tipo,
+          fecha: fechaLocal,
+          hora: horaLocal, // Hora actual en formato HH:mm:ss
+          geolocalizacion: req.body.geolocalizacion,
+          observacion: req.body.observacion ?? ''
+        };
+        // Asignar latitud y longitud a variables separadas
+        const newrecord = await service.create(newRecord);
+         res.json(newrecord);
+      } catch (error) {
+        next(error);
+      }
+    }
+  );
+
 module.exports = router;
