@@ -113,15 +113,20 @@ router.post('/buscar', passport.authenticate('jwt', { session: false }), async (
 
     const year = req.body.year;
     const month = req.body.month;
-    const startDate  = req.body.fechaInicio; //deberia llegar en formato AAAAMMDD
-    const endDate  = req.body.fechaTermino;
-    //console.log("BODY",req.body);
-    // const validatedMonth = month;
-    // const timezone = "America/Santiago";
-    // const startDate = moment.tz(`${year}-${validatedMonth}-01 08:00:00`, timezone);
-    // const lastDayOfMonth = moment.tz(`${year}-${validatedMonth}-01`, timezone).endOf('month').date();
-    // const endDate = moment.tz(`${year}-${validatedMonth}-${lastDayOfMonth} 08:00:00`, timezone);
+    // let startDate  = req.body.fechaInicio; //deberia llegar en formato AAAAMMDD
+    // let endDate  = req.body.fechaTermino;
+    const startDateText  = req.body.fechaInicioText;
+    const endDateText  = req.body.fechaTerminoText;
+    const timezone = 'America/Santiago';
+    //  startDate = new Date(`${startDateText}T08:00:00`);
+    //  endDate = new Date(`${endDateText}T18:00:00`);
+     const startDate = moment.tz(`${startDateText} 04:00:00`, timezone).toDate();
+     const endDate = moment.tz(`${endDateText} 18:00:00`, timezone).toDate();
 
+    console.log("=======startDate============>",startDate);
+    console.log("==========endDate=========>",endDate);
+    console.log("===================>",startDateText);
+    console.log("===================>",endDateText);
     const between = {
       startDate,
       endDate,
@@ -224,18 +229,19 @@ router.post('/editar',
 
   router.post('/buscar-resumen', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
     try {
-      //const requiredTypes = ["entrada", "salida_almuerzo", "entrada_almuerzo", "salida"];
-  
-      // const year = req.body.year;
-      // const month = req.body.month;
-      const startDate  = req.body.fechaInicio; //deberia llegar en formato AAAAMMDD
-      const endDate  = req.body.fechaTermino;
-      //console.log("BODY",req.body);
-      // const validatedMonth = month;
-      // const timezone = "America/Santiago";
-      // const startDate = moment.tz(`${year}-${validatedMonth}-01 08:00:00`, timezone);
-      // const lastDayOfMonth = moment.tz(`${year}-${validatedMonth}-01`, timezone).endOf('month').date();
-      // const endDate = moment.tz(`${year}-${validatedMonth}-${lastDayOfMonth} 08:00:00`, timezone);
+          // let startDate  = req.body.fechaInicio; //deberia llegar en formato AAAAMMDD
+    // let endDate  = req.body.fechaTermino;
+      const startDateText  = req.body.fechaInicioText;
+      const endDateText  = req.body.fechaTerminoText;
+      const timezone = 'America/Santiago';
+
+      const startDate = moment.tz(`${startDateText} 04:00:00`, timezone).toDate();
+      const endDate = moment.tz(`${endDateText} 18:00:00`, timezone).toDate();
+      console.log("=======startDate============>",startDate);
+      console.log("==========endDate=========>",endDate);
+      console.log("===================>",startDateText);
+      console.log("===================>",endDateText);
+ 
       let obBusqueda = {};
 
 

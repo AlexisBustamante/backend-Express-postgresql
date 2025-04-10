@@ -1,4 +1,5 @@
 const { config } = require('./../config/config');
+////npx sequelize-cli db:create
 //si da error de dialect al ejecutar migracion 
 //ejecutar docker contenedor
 //echo $NODE_ENV
